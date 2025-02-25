@@ -1,5 +1,81 @@
+body {
+    background-color: 	#FDB515;
+    font-family: 'Trebuchet MS', sans-serif;
+}
+
+p {
+    font-size: large;
+}
 
 #map {
-    height: 500px;
+    height: 750px;
     width: 100%;
+    border: 5px solid rgba(0, 0, 0, 0.8);
+}
+
+#icon {
+    position: absolute;
+    top: 25px; 
+    left: 25px; 
+    z-index: 1000; 
+    width: 150px;
+    height: 150px;
+}
+
+#main-div {
+    position: absolute;
+    top: 45px; 
+    left: 75%; 
+    z-index: 1000; 
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    border-radius: 20px;
+    border: 5px solid rgba(253, 181, 21, 0.8);
+    margin: 10px;
+}
+
+#umbc-title {
+    width: 100%;
+    height: auto;
+}
+
+.item {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 20px;
+    border: 5px solid rgba(253, 181, 21, 0.8);
+    margin: 10px 5px;
+}
+
+#search-container {
+    /* position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000; */
+    background: white;
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+}
+
+#search-input {
+    width: 200px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+#search-icon {
+    width: 10px;
+    height: auto;
+}
+
+button {
+    padding: 5px 10px;
+    border: none;
+    background: #FDB515;
+    color: black;
+    border-radius: 3px;
+    cursor: pointer;
 }
