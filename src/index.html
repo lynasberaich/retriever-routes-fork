@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retriever Routes</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel = "icon" href="assets/icon_no_bg.png" type="image/png">
+
+    <style>
+        #map {
+            height: 750px;
+            width: 100%;
+            border: 5px solid rgba(0, 0, 0, 0.8);
+        }
+
+        body {
+            background-color: 	#FDB515;
+            font-family: 'Trebuchet MS', sans-serif;
+        }
+
+        #icon {
+            position: absolute;
+            top: 25px; 
+            left: 25px; 
+            z-index: 1000; 
+            width: 150px;
+            height: 150px;
+        }
+
+        #div {
+            position: absolute;
+            top: 45px; 
+            left: 75%; 
+            z-index: 1000; 
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 20px;
+            border: 5px solid rgba(253, 181, 21, 0.8);
+            margin: 10px;
+        }
+        #umbc_title {
+            width: 100%;
+            height: auto;
+        }
+        p {
+            font-size: large;
+        }
+        .item {
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            border: 5px solid rgba(253, 181, 21, 0.8);
+            margin: 10px 5px;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Retriever Routes</h1>
+    <div id="map">
+        <!-- Image overlay -->
+        <img id="icon" src="assets/icon_no_bg.png" alt="Retriever Routes Icon">
+
+        <!-- Div overlay -->
+        <div id="div">
+            <img id="umbc_title" src="assets/umbc_name.png" alt="umbc title">
+            <div class="item">
+                <p>search</p>
+            </div>
+                
+            <div class="item">
+                <p> > umbc campus building list</p>
+            </div>
+
+            <div class="item">
+                <p> > visitor and residential parking</p> 
+            </div>
+
+            <div class="item">
+                <p> > umbc campus building list</p>
+            </div>
+
+            <div class="item">
+                <p> > umbc campus building list</p>
+            </div>
+
+            <div class="item">
+                <p> > user settings</p>
+            </div>
+            
+            
+            
+            
+            
+            
+        </div>
+
+    </div>
+    
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="scripts/map.js"></script>
+</body>
+</html>
