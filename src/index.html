@@ -6,45 +6,64 @@
     <title>Retriever Routes</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="styles/index.css">
-    <link rel = "icon" href="assets/icon_no_bg.png" type="image/png">
+    <link rel = "icon" href="assets/images/icon_no_bg.png" type="image/png">
+    <script src="scripts/map.js"></script>
 </head>
 <body>
     <h1>Retriever Routes</h1>
     <div id="map">
         <!-- Image overlay -->
-        <img id="icon" src="assets/icon_no_bg.png" alt="Retriever Routes Icon">
+        <img id="icon" src="assets/images/icon_no_bg.png" alt="Retriever Routes Icon">
 
         <!-- Div overlay -->
         <div id="main-div">
-            <img id="umbc-title" src="assets/umbc_name.png" alt="umbc title">
+            <img id="umbc-title" src="assets/images/umbc_name.png" alt="umbc title">
             <div class="item" id="search-container">
                 <form id="search-place">
-                    <input type="text" id="search-input" placeholder="search locations"/>
-                    <button type="submit">
-                        <img id="search-icon" src="assets/search.png" alt="search icon">
+                    <input type="text" id="search-input" placeholder="Search Locations!"/>
+                    <button type="submit" id="search-button">
+                        <img id="search-icon" src="assets/images/search.png" alt="search icon">
                     </button>
                 </form>
                 
             </div>
                 
-            <div class="item">
-                <p> > umbc campus building list</p>
+            <div class="item dropdown">
+                <button type="submit">
+                    <img class="down-icon" src="assets/images/chevron.png" alt="down icon">
+                </button>
+                <p> UMBC Campus Building List</p>
+                <div class="dropdown-content">
+                    <p>Library</p>
+                    <p>Engineering Building</p>
+                    <p>Administration</p>
+                    <p>Commons</p>
+                </div>
             </div>
 
-            <div class="item">
-                <p> > visitor and residential parking</p> 
+            <div class="item dropdown">
+                <button type="submit">
+                    <img class="down-icon" src="assets/images/chevron.png" alt="down icon">
+                </button>
+                <p> Visitor and Residential Parking</p>
+                <div class="dropdown-content">
+                    <p>Lot 1</p>
+                    <p>Lot 2</p>
+                    <p>Parking Garage</p>
+                </div> 
             </div>
 
-            <div class="item">
-                <p> > umbc campus building list</p>
-            </div>
 
-            <div class="item">
-                <p> > umbc campus building list</p>
-            </div>
-
-            <div class="item">
-                <p> > user settings</p>
+            <div class="item dropdown">
+                <button type="submit">
+                    <img class="down-icon" src="assets/images/chevron.png" alt="down icon">
+                </button>
+                <p> User Filters</p>
+                <div class="dropdown-content">
+                    <p>Accesibility</p>
+                    <p>Academic Services</p>
+                    <p>Food</p>
+                </div>
             </div>
             
         </div>

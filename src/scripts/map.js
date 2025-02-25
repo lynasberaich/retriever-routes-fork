@@ -51,3 +51,17 @@ document.getElementById('search-place').addEventListener('submit', function(even
         alert("Location not found!");
     }
 });
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Select all dropdowns
+    const dropdowns = document.querySelectorAll('.dropdown');
+
+    // Add click event to each dropdown
+    dropdowns.forEach(dropdown => {
+        dropdown.querySelector('button').addEventListener('click', function() {
+            // Toggle the active class to show/hide the dropdown content
+            dropdown.classList.toggle('active');
+        });
+    });
+});

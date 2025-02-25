@@ -1,15 +1,32 @@
 body {
     background-color: 	#FDB515;
-    font-family: 'Trebuchet MS', sans-serif;
+    font-family: 'red-hat-display', sans-serif;
+}
+
+@font-face {
+    font-family: 'red-hat-display';
+    src: url('../assets/fonts/RedHatDisplay-Regular.ttf') format("truetype");
 }
 
 p {
     font-size: large;
 }
 
+h1 {
+    font-size: 40px;
+}
+
+button {
+    padding: 5px 10px;
+    border: none;
+    color: black;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
 #map {
     height: 750px;
-    width: 100%;
+    width: 99%;
     border: 5px solid rgba(0, 0, 0, 0.8);
 }
 
@@ -65,17 +82,66 @@ p {
     border: 1px solid #ccc;
     border-radius: 3px;
 }
+#search-button {
+    background: #FDB515;
+}
 
 #search-icon {
     width: 10px;
     height: auto;
 }
 
-button {
-    padding: 5px 10px;
-    border: none;
-    background: #FDB515;
-    color: black;
-    border-radius: 3px;
-    cursor: pointer;
+.dropdown {
+    display: flex;
+    align-items: center; /* Center the items vertically */
+    margin: 10px 0;
+    position: relative;
 }
+
+.dropdown button {
+    background: none; /* Remove button background */
+    border: none; /* Remove border */
+    padding: 0; /* Remove padding */
+    cursor: pointer; /* Pointer cursor for interactivity */
+    margin-right: 10px; /* Space between the icon and text */
+}
+
+.down-icon {
+    width: 15px;
+    height: auto;
+}
+
+.dropdown p {
+    margin: 0; /* Remove the default margin */
+    font-size: 16px;
+    color: #000; /* Adjust text color */
+}
+
+/* Dropdown Styling */
+.dropdown-content {
+    display: none;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    border: 3px solid rgba(253, 181, 21, 0.8);
+    padding: 10px;
+    margin-top: 5px;
+    position: relative;
+    width: 100%;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Optional: Transition effect for smooth expanding */
+.dropdown-content {
+    transition: max-height 0.3s ease-out;
+    max-height: 0; /* Start with max-height as 0 to hide */
+    overflow: hidden; /* Hide overflow when not visible */
+}
+
+/* Show dropdown on click */
+.dropdown.active .dropdown-content {
+    display: block;
+    height: auto;
+    max-height: 500px;
+}
+
+
