@@ -10,10 +10,12 @@ body {
 
 p {
     font-size: large;
+    font-family: 'red-hat-display', sans-serif;
 }
 
 h1 {
     font-size: 40px;
+    font-family: 'red-hat-display', sans-serif;
 }
 
 button {
@@ -74,13 +76,15 @@ button {
     border-radius: 5px;
     display: flex;
     align-items: center;
+    border: 5px;
 }
 
 #search-input {
     width: 200px;
     padding: 5px;
     border: 1px solid #ccc;
-    border-radius: 3px;
+    border-radius: 5px;
+    font-family: 'red-hat-display', sans-serif;
 }
 #search-button {
     background: #FDB515;
