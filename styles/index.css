@@ -148,4 +148,28 @@ button {
     max-height: 500px;
 }
 
+.link-box {
+    background-color: #000; /* Black background */
+    color: #FDB515; /* UMBC gold */
+    padding: 10px 20px;
+    text-align: center;
+    border-radius: 10px;
+    display: inline-block; /* Makes it act like a button */
+    cursor: pointer;
+    font-size: 16px;
+    margin: 10px 0;
+    transition: background-color 0.3s;
+}
+
+.link-box a {
+    color: #FDB515; /* Gold text */
+    text-decoration: none; /* Remove underline */
+    font-weight: bold;
+    display: block;
+}
+
+.link-box:hover {
+    background-color: #333; /* Darker black on hover */
+}
+
 
