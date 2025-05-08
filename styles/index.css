@@ -600,3 +600,34 @@ body.font-size-large button {
 .location-input-group {
     display: none;
 }
+
+/* Styling for the toggle search button */
+.toggle-search-btn {
+    position: absolute;
+    bottom: 380px;
+    left: 10px;
+    z-index: 1000;
+    background: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.65);
+    border: none;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.toggle-search-btn img {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+}
+
+.toggle-search-btn:hover {
+    background-color: #f0f0f0;
+}
+
+.toggle-search-btn.hidden {
+    display: none;
+}

@@ -783,48 +783,49 @@ document.addEventListener('DOMContentLoaded', function() {
     setupAutocomplete(startInput, startAutocomplete);
     setupAutocomplete(endInput, endAutocomplete);
 
-    // Handle routing form submission
+    // Handling the routing form submission and toggle functionality
     document.getElementById('routing-search').addEventListener('submit', function(e) {
         e.preventDefault();
         
         const startLocation = startInput.value.trim().toLowerCase();
         const endLocation = endInput.value.trim().toLowerCase();
-
-        // Check if locations exist
+        
+        // Check if locations exist and set the route as before
         if (shorthandInputs[startLocation] && shorthandInputs[endLocation]) {
             // Update routing control waypoints
             routeCtrl.setWaypoints([
                 L.latLng(buildings[shorthandInputs[startLocation]].coordinates),
                 L.latLng(buildings[shorthandInputs[endLocation]].coordinates)
             ]);
-        } else if (sel_destination_flag && !sel_start_flag) {
+            
+            // Hide the search container and show the toggle button
+            document.getElementById('routing-search-container').classList.add('hidden');
+            document.getElementById('toggle-search-btn').classList.remove('hidden');
+        } 
+        else if (sel_destination_flag && !sel_start_flag) {
+            // Handle existing logic
             routeCtrl.setWaypoints([
                 L.latLng(buildings[shorthandInputs[startLocation]].coordinates),
                 L.latLng(selectedParkEnd.coordinates)
             ]);
             sel_destination_flag = 0;
             document.getElementById('route-end').value = "";
-        }else if (sel_start_flag && !sel_destination_flag) {
-            routeCtrl.setWaypoints([
-                L.latLng(selectedParkStart.coordinates),
-                L.latLng(buildings[shorthandInputs[endLocation]].coordinates)
-            ]);
-            sel_start_flag = 0;
-            document.getElementById('route-start').value = "";
-        }else if (sel_start_flag && sel_start_flag) {
-            routeCtrl.setWaypoints([
-                L.latLng(selectedParkStart.coordinates),
-                L.latLng(selectedParkEnd.coordinates)
-            ]);
-            sel_start_flag = 0;
-            sel_destination_flag = 0;
-            document.getElementById('route-end').value = "";
-            document.getElementById('route-start').value = "";
-        } else {
+            
+            // Hide the search container and show the toggle button
+            document.getElementById('routing-search-container').classList.add('hidden');
+            document.getElementById('toggle-search-btn').classList.remove('hidden');
+        }
+        // Handle other conditions...
+        else {
             alert("Invalid waypoint(s)");
         }
     });
 
+    // Toggle search container visibility when the button is clicked
+    document.getElementById('toggle-search-btn').addEventListener('click', function() {
+        document.getElementById('routing-search-container').classList.remove('hidden');
+        this.classList.add('hidden');
+    });
 
     // Hide suggestions when clicking elsewhere
     document.addEventListener('click', function(e) {
