@@ -1113,4 +1113,198 @@ document.addEventListener('DOMContentLoaded', function() {
         // Otherwise, proceed with normal routing logic
         // ... [rest of your existing routing code]
     });
+
+    // Detect if we're on mobile
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+
+    if (isMobile) {
+        // Create mobile-friendly step-by-step instructions view
+        function createMobileInstructionsView() {
+            // Wait for the routing container to be added to the DOM
+            const checkForRoutingContainer = setInterval(function() {
+                const routingContainer = document.querySelector('.leaflet-routing-container');
+                if (routingContainer) {
+                    clearInterval(checkForRoutingContainer);
+                    
+                    // Create our custom mobile instructions container
+                    const mobileInstructions = document.createElement('div');
+                    mobileInstructions.className = 'mobile-routing-instructions';
+                    
+                    // Create the instruction step display
+                    const stepDisplay = document.createElement('div');
+                    stepDisplay.className = 'mobile-instruction-step';
+                    
+                    const stepIcon = document.createElement('div');
+                    stepIcon.className = 'mobile-instruction-icon';
+                    
+                    const stepText = document.createElement('div');
+                    stepText.className = 'mobile-instruction-text';
+                    stepText.textContent = 'Select a route to begin navigation';
+                    
+                    const stepDistance = document.createElement('div');
+                    stepDistance.className = 'mobile-instruction-distance';
+                    
+                    stepDisplay.appendChild(stepIcon);
+                    stepDisplay.appendChild(stepText);
+                    stepDisplay.appendChild(stepDistance);
+                    
+                    // Create navigation controls
+                    const navControls = document.createElement('div');
+                    navControls.className = 'mobile-instruction-nav';
+                    
+                    const prevBtn = document.createElement('button');
+                    prevBtn.className = 'mobile-nav-btn';
+                    prevBtn.innerHTML = '&larr; Prev';
+                    prevBtn.addEventListener('click', showPreviousStep);
+                    
+                    const stepCounter = document.createElement('div');
+                    stepCounter.className = 'mobile-step-counter';
+                    stepCounter.textContent = '0/0';
+                    
+                    const nextBtn = document.createElement('button');
+                    nextBtn.className = 'mobile-nav-btn';
+                    nextBtn.innerHTML = 'Next &rarr;';
+                    nextBtn.addEventListener('click', showNextStep);
+                    
+                    navControls.appendChild(prevBtn);
+                    navControls.appendChild(stepCounter);
+                    navControls.appendChild(nextBtn);
+                    
+                    // Add everything to the container
+                    mobileInstructions.appendChild(stepDisplay);
+                    mobileInstructions.appendChild(navControls);
+                    
+                    // Append to the routing container
+                    routingContainer.appendChild(mobileInstructions);
+                    
+                    // Store references for later
+                    window.mobileRoutingElements = {
+                        container: mobileInstructions,
+                        icon: stepIcon,
+                        text: stepText,
+                        distance: stepDistance,
+                        counter: stepCounter,
+                        prevBtn: prevBtn,
+                        nextBtn: nextBtn,
+                        currentStep: 0,
+                        instructions: []
+                    };
+                }
+            }, 100);
+        }
+        
+        // Initialize mobile view
+        createMobileInstructionsView();
+        
+        // Show the next instruction step
+        function showNextStep() {
+            const elements = window.mobileRoutingElements;
+            if (!elements || elements.instructions.length === 0) return;
+            
+            if (elements.currentStep < elements.instructions.length - 1) {
+                elements.currentStep++;
+                updateStepDisplay();
+            }
+        }
+        
+        // Show the previous instruction step
+        function showPreviousStep() {
+            const elements = window.mobileRoutingElements;
+            if (!elements || elements.instructions.length === 0) return;
+            
+            if (elements.currentStep > 0) {
+                elements.currentStep--;
+                updateStepDisplay();
+            }
+        }
+        
+        // Update the step display with current instruction
+        function updateStepDisplay() {
+            const elements = window.mobileRoutingElements;
+            if (!elements || elements.instructions.length === 0) return;
+            
+            const instr = elements.instructions[elements.currentStep];
+            
+            // Update icon
+            elements.icon.className = 'mobile-instruction-icon leaflet-routing-icon-' + 
+                (instr.iconName || 'continue');
+            
+            // Update text
+            elements.text.innerHTML = instr.text;
+            
+            // Update distance
+            if (instr.distance) {
+                elements.distance.textContent = instr.distance;
+                elements.distance.style.display = 'block';
+            } else {
+                elements.distance.style.display = 'none';
+            }
+            
+            // Update counter
+            elements.counter.textContent = `${elements.currentStep + 1}/${elements.instructions.length}`;
+            
+            // Enable/disable buttons as needed
+            elements.prevBtn.disabled = elements.currentStep === 0;
+            elements.nextBtn.disabled = elements.currentStep === elements.instructions.length - 1;
+        }
+        
+        // Override the route selected event to populate our mobile instructions
+        routeCtrl.on('routeselected', function(e) {
+            // The default route handling (for desktop) happens here
+            const routeCoordinates = e.route.coordinates;
+            
+            // Clear previous paw prints
+            activeMarkers.forEach(marker => map.removeLayer(marker));
+            activeMarkers = [];
+            
+            const intervalDistance = 25; // in meters (change to make closer/farther)
+            let accumulatedDistance = 0;
+            let lastPrintCoord = routeCoordinates[0];
+            
+            for (let i = 1; i < routeCoordinates.length; i++) {
+                const currentCoord = routeCoordinates[i];
+                const segmentDistance = lastPrintCoord.distanceTo(currentCoord);
+                
+                accumulatedDistance += segmentDistance;
+                
+                while (accumulatedDistance >= intervalDistance) {
+                    // Calculate how far along the segment to place the paw print
+                    const overshoot = accumulatedDistance - intervalDistance;
+                    const fraction = 1 - (overshoot / segmentDistance);
+                    
+                    const lat = lastPrintCoord.lat + fraction * (currentCoord.lat - lastPrintCoord.lat);
+                    const lng = lastPrintCoord.lng + fraction * (currentCoord.lng - lastPrintCoord.lng);
+                    
+                    const pawPrintMarker = L.marker([lat, lng], { icon: pawPrintIcon }).addTo(map);
+                    activeMarkers.push(pawPrintMarker);
+                    
+                    // Prepare for next interval
+                    accumulatedDistance -= intervalDistance;
+                    lastPrintCoord = L.latLng(lat, lng);
+                }
+                
+                lastPrintCoord = currentCoord;
+            }
+            
+            // Mobile specific code to capture instructions
+            if (isMobile && window.mobileRoutingElements) {
+                // Process the instructions for mobile view
+                const mobileInstructions = e.route.instructions.map((instr, idx) => {
+                    // Determine the icon name to use
+                    let iconName = customFormatter.getIconName(instr, idx);
+                    
+                    return {
+                        text: instr.text,
+                        distance: instr.distance ? customFormatter.formatDistance(instr.distance) : '',
+                        iconName: iconName
+                    };
+                });
+                
+                // Store and display instructions
+                window.mobileRoutingElements.instructions = mobileInstructions;
+                window.mobileRoutingElements.currentStep = 0;
+                updateStepDisplay();
+            }
+        });
+    }
 });

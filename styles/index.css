@@ -331,6 +331,96 @@ button {
         margin-top: 5px;
         margin-bottom: 0;
     }
+
+    /* Make the routing container smaller on mobile */
+    .leaflet-routing-container {
+        max-height: 150px !important;
+        width: 260px !important;
+        overflow: hidden;
+    }
+    
+    /* Hide the default instructions table on mobile */
+    .leaflet-routing-container .leaflet-routing-alternatives-container {
+        display: none !important;
+    }
+    
+    /* Show our custom mobile instructions container */
+    .mobile-routing-instructions {
+        display: flex !important;
+    }
+    
+    /* Position the toggle search button for mobile */
+    .toggle-search-btn {
+        bottom: 160px;  /* Adjust based on smaller routing container */
+    }
+    
+    /* Position the search container for mobile */
+    #routing-search-container {
+        bottom: 160px;  /* Adjust based on smaller routing container */
+    }
+}
+
+/* Mobile step-by-step instructions styles (hidden by default on desktop) */
+.mobile-routing-instructions {
+    display: none;
+    flex-direction: column;
+    background-color: white;
+    border-radius: 4px;
+    margin: 0;
+    padding: 10px;
+    height: 120px;
+    position: relative;
+}
+
+.mobile-instruction-step {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.mobile-instruction-icon {
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+    margin-right: 10px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.mobile-instruction-text {
+    flex-grow: 1;
+}
+
+.mobile-instruction-distance {
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.mobile-instruction-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: auto;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+}
+
+.mobile-nav-btn {
+    background-color: #FDB515;
+    color: black;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mobile-step-counter {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
 }
 
 /* routing search box */
