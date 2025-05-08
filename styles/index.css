@@ -14,8 +14,11 @@ p {
 }
 
 h1 {
-    font-size: 40px;
+    font-size: 50px;
     font-family: 'red-hat-display', sans-serif;
+    text-align: center;
+    margin-bottom: 2px;
+    margin-top: 10px;
 }
 
 button {
@@ -30,6 +33,7 @@ button {
     height: 750px;
     width: 99%;
     border: 5px solid rgba(0, 0, 0, 0.8);
+    margin-top: 0;
 }
 
 #icon {
@@ -157,7 +161,8 @@ button {
     display: inline-block; /* Makes it act like a button */
     cursor: pointer;
     font-size: 16px;
-    margin: 10px 0;
+    margin-bottom: 5px;
+    margin-top: 5px;
     transition: background-color 0.3s;
 }
 
@@ -199,4 +204,399 @@ button {
     position: relative;
 }
 
+/* Building popup styling */
+.building-info-popup .leaflet-popup-content-wrapper {
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    border: 3px solid #FDB515;
+}
 
+.building-info-popup .leaflet-popup-tip {
+    background-color: #FDB515;
+}
+
+.building-popup h3 {
+    color: #000;
+    margin-top: 0;
+    border-bottom: 2px solid #FDB515;
+    padding-bottom: 5px;
+    font-family: 'red-hat-display', sans-serif;
+}
+
+.building-popup p {
+    margin: 8px 0;
+    font-size: 14px;
+}
+
+.building-popup ul {
+    margin: 5px 0;
+    padding-left: 20px;
+    font-family: 'red-hat-display', sans-serif;
+}
+
+.building-popup li {
+    margin: 3px 0;
+    font-size: 14px;
+    font-family: 'red-hat-display', sans-serif;
+}
+
+@media only screen and (max-width: 768px) {
+    /* Main div adjustments */
+    #main-div {
+        display: block;
+        top: 20px; 
+        left: 70%;
+        transform: translateX(-50%); 
+        width: 45%; 
+        padding: 10px; 
+        border-radius: 15px; 
+        border: 3px solid rgba(253, 181, 21, 0.8); 
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+        opacity: 1;
+        visibility: visible;
+    }
+
+    
+    #icon {
+        width: 40px; 
+        height: 40px;
+        top: 10px; 
+        left: 10px;
+    }
+   
+    #map {
+        height: 650px; 
+    }
+
+    
+    #search-container {
+        width: 80%; 
+        padding: 10px;
+        margin-top: 10px;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+    }
+
+    
+    #search-input {
+        width: 70%; 
+        padding: 8px;
+        font-size: 14px; 
+    }
+
+   
+    #search-button {
+        padding: 4px 4px;
+        background: #FDB515;
+        font-size: 14px; 
+    }
+
+    .dropdown {
+        flex-direction: column;
+        align-items: flex-start; 
+    }
+
+    .dropdown button {
+        margin-bottom: 5px; 
+    }
+
+    
+    .dropdown-content {
+        padding: 8px;
+        max-height: 200px; 
+        width: 100%; 
+    }
+
+    .link-box {
+        font-size: 14px; 
+        padding: 8px 15px; 
+    }
+
+    
+    .autocomplete-items {
+        max-height: 150px; 
+    }
+}
+
+/* routing search box */
+#routing-search-container {
+    position: absolute;
+    bottom: 200px;
+    left: 340px; /* just to the right of the routing control box */
+    z-index: 1000;
+    background: white;
+    padding: 10px;
+    border-radius: 4px;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.65);
+    transition: opacity 0.3s ease-in-out;
+    width: 300px;
+}
+
+#routing-search-container.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+#routing-search input {
+    margin-bottom: 5px;
+    padding: 5px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#routing-search button {
+    width: 100%;
+    padding: 5px;
+    background: #FDB515;
+    color: black;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#routing-search button:hover {
+    background: #e5a313;
+}
+
+
+.leaflet-routing-container .leaflet-routing-instruction-distance {
+    width: 95px;
+    min-width: 95px;
+    max-width: 95px;
+    text-align: right;
+    padding-right: 5px !important;
+}
+
+body.light-teal-mode {
+    background-color: #007176; /* Teal color */
+    color: #333; /* Dark grey text */
+}
+
+body.light-teal-mode h1,
+body.light-teal-mode p,
+body.light-teal-mode button {
+    color: #333; /* Dark grey text */
+}
+
+body.light-teal-mode #map {
+    border-color: #ccc; /* Light grey border */
+}
+
+body.light-teal-mode .link-box {
+    background-color: #e0f7f9; /* Light teal background */
+    color: black; /* White text */
+}
+
+body.light-teal-mode .link-box a {
+    color: black; /* White text */
+}
+
+body.light-teal-mode .dropdown-content {
+    background-color: #e0f7f9; /* Light teal background */
+    color: #333; /* Dark grey text */
+}
+
+body.light-teal-mode .autocomplete-items {
+    background-color: #e0f7f9; /* Light teal background */
+    color: #333; /* Dark grey text */
+}
+
+/* Add more styles as needed for other elements */
+
+
+/* permit marker styling */
+
+.permit-marker {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: white;
+    background-color: #333;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    font-size: 14px;
+    border: 2px solid white;
+}
+
+.parking-info-popup .leaflet-popup-content-wrapper {
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    border: 3px solid #FDB515;
+}
+
+.parking-info-popup .leaflet-popup-tip {
+    background-color: #FDB515;
+}
+
+.parking-popup h3 {
+    color: #000;
+    margin-top: 0;
+    border-bottom: 2px solid #FDB515;
+    padding-bottom: 5px;
+    font-family: 'red-hat-display', sans-serif;
+}
+
+.parking-popup p {
+    margin: 8px 0;
+    font-size: 14px;
+}
+
+.parking-popup ul {
+    margin: 5px 0;
+    padding-left: 20px;
+    font-family: 'red-hat-display', sans-serif;
+}
+
+.parking-popup li {
+    margin: 3px 0;
+    font-size: 14px;
+    font-family: 'red-hat-display', sans-serif;
+}
+
+/* Font size controls */
+.font-size-controls {
+    position: absolute;
+    top: 10px;
+    right: 100px; /* Positioned to the left of the color scheme toggle */
+    z-index: 1000;
+    display: flex;
+    gap: 5px;
+}
+
+.font-size-btn {
+    background-color: #FDB515;
+    color: black;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    padding: 4px 8px;
+}
+
+.font-size-btn.active {
+    background-color: #007176;
+    color: white;
+}
+
+/* Font size classes */
+body.font-size-normal {
+    font-size: 16px;
+}
+
+body.font-size-medium {
+    font-size: 18px;
+}
+
+body.font-size-large {
+    font-size: 20px;
+}
+
+body.font-size-medium h1 {
+    font-size: 60px;
+}
+
+body.font-size-large h1 {
+    font-size: 70px;
+}
+
+body.font-size-medium p {
+    font-size: larger;
+}
+
+body.font-size-large p {
+    font-size: x-large;
+}
+
+/* Adjust dropdown and other text elements for larger font sizes */
+body.font-size-medium .dropdown p,
+body.font-size-medium .autocomplete-items div,
+body.font-size-medium #search-input,
+body.font-size-medium button {
+    font-size: 18px;
+}
+
+body.font-size-large .dropdown p, 
+body.font-size-large .autocomplete-items div,
+body.font-size-large #search-input,
+body.font-size-large button {
+    font-size: 20px;
+
+}
+
+/* Simplified Welcome Screen Styles */
+#welcome-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.5s ease;
+}
+
+.welcome-content {
+    background-color: white;
+    border-radius: 20px;
+    border: 5px solid #FDB515;
+    padding: 30px;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.welcome-logo {
+    width: 120px;
+    height: 120px;
+    margin-bottom: 15px;
+}
+
+#welcome-screen h2 {
+    color: #000;
+    font-size: 32px;
+    margin-bottom: 20px;
+    font-family: 'red-hat-display', sans-serif;
+}
+
+#welcome-close-btn {
+    padding: 12px 30px;
+    font-size: 18px;
+    margin-top: 15px;
+}
+
+/* The rest of the styles can remain for light teal mode and mobile compatibility */
+
+/* Updated location button styling */
+.routing-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+.location-btn {
+    background-color: #FDB515;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.location-icon {
+    width: 16px;
+    height: 16px;
+}
+
+/* Remove the old styling that's no longer needed */
+.location-input-group {
+    display: none;
+}

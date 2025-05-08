@@ -6,14 +6,41 @@
     <title>Retriever Routes</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="styles/index.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
     <link rel = "icon" href="assets/images/icon_no_bg.png" type="image/png">
     
 </head>
 <body>
     <h1>Retriever Routes</h1>
+
+    <!-- Toggle Button -->
+    <button id="toggle-btn" class="link-box">Toggle View</button>
+    <button id="color-scheme-toggle" class ="link-box" style="position: absolute; top: 10px; right: 10px; z-index: 1000;">Toggle Color Scheme</button>
+    
+    <!-- Font Size Controls -->
+    <div style="position: absolute; top: 70px; right: 10px; z-index: 1000;" class="font-size-controls">
+        <button class="font-size-btn active" data-size="normal">A</button>
+        <button class="font-size-btn" data-size="medium">A+</button>
+        <button class="font-size-btn" data-size="large">A++</button>
+    </div>
+    
     <div id="map">
         <!-- Image overlay -->
         <img id="icon" src="assets/images/icon_no_bg.png" alt="Retriever Routes Icon">
+
+        <!-- routing search form -->
+        <div id="routing-search-container">
+            <form id="routing-search">
+                <input type="text" id="route-start" placeholder="Start Location"/>
+                <input type="text" id="route-end" placeholder="Destination"/>
+                <div class="routing-buttons">
+                    <button type="button" id="use-my-location" class="location-btn" title="Use my current location">
+                        <img src="assets/images/location.png" alt="Location" class="location-icon">
+                    </button>
+                    <button type="submit">Route</button>
+                </div>
+            </form>
+        </div>
 
         <!-- Div overlay -->
         <div id="main-div">
@@ -46,11 +73,16 @@
                     <img class="down-icon" src="assets/images/chevron.png" alt="down icon">
                 </button>
                 <p> Visitor and Residential Parking</p>
-                <div class="dropdown-content">
-                    <p>Lot 1</p>
-                    <p>Lot 2</p>
-                    <p>Parking Garage</p>
-                </div> 
+                <div class="dropdown-content" id="permit-filters">
+                    <p><input type="checkbox" value="A"> Permit A</p>
+                    <p><input type="checkbox" value="B"> Permit B</p>
+                    <p><input type="checkbox" value="C"> Permit C</p>
+                    <p><input type="checkbox" value="D"> Permit D</p>
+                    <p><input type="checkbox" value="E"> Permit E</p>
+                    <p><input type="checkbox" value="P"> Paid/Visitor Parking</p>
+                    <p><input type="checkbox" value="Ev"> Event Parking</p>
+                    <p><input type="checkbox" value="♿"> Accessible Parking</p>
+                </div>
             </div>
 
 
@@ -75,6 +107,18 @@
     
     
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="scripts/map.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBR3WgEs33HXukw1RS2tMZK7ckyb14cgF4"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/examples/Control.Geocoder.js"></script>
+    <script src="scripts/map.js", type="module"></script>
+
+    <!-- Simplified welcome screen -->
+    <div id="welcome-screen">
+        <div class="welcome-content">
+            <img src="assets/images/icon_no_bg.png" alt="Retriever Routes Logo" class="welcome-logo">
+            <h2>Welcome to Retriever Routes!</h2>
+            <button id="welcome-close-btn" class="link-box">Get Started</button>
+        </div>
+    </div>
 </body>
 </html>
