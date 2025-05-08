@@ -318,6 +318,35 @@ button {
     .autocomplete-items {
         max-height: 150px; 
     }
+
+    /* Reposition the color scheme toggle button on mobile */
+    #color-scheme-toggle {
+        position: absolute;
+        top: 70px; /* Move below the title */
+        right: 10px;
+        font-size: 12px; /* Smaller font */
+        padding: 6px 10px; /* Smaller padding */
+    }
+    
+    /* Reposition the font size controls on mobile */
+    .font-size-controls {
+        position: absolute;
+        top: 110px; /* Move further down */
+        right: 10px;
+        gap: 3px; /* Smaller gap between buttons */
+    }
+    
+    .font-size-btn {
+        padding: 3px 6px; /* Smaller buttons */
+        font-size: 12px; /* Smaller font */
+    }
+    
+    /* Make h1 smaller on mobile to avoid crowding */
+    h1 {
+        font-size: 32px;
+        margin-top: 5px;
+        margin-bottom: 0;
+    }
 }
 
 /* routing search box */
