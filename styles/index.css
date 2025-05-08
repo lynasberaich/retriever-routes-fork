@@ -323,8 +323,8 @@ button {
 /* routing search box */
 #routing-search-container {
     position: absolute;
-    bottom: 200px;
-    left: 340px; /* just to the right of the routing control box */
+    bottom: 380px; /* Position above the routing control box */
+    left: 10px; /* Aligned with left edge of the routing control */
     z-index: 1000;
     background: white;
     padding: 10px;
