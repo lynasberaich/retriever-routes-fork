@@ -790,7 +790,29 @@ document.addEventListener('DOMContentLoaded', function() {
         const startLocation = startInput.value.trim().toLowerCase();
         const endLocation = endInput.value.trim().toLowerCase();
         
-        // Check if locations exist and set the route as before
+        // Check for "My Location" case first
+        if (startLocation === "my location" && startInput.dataset.lat && startInput.dataset.lng) {
+            const userLat = parseFloat(startInput.dataset.lat);
+            const userLng = parseFloat(startInput.dataset.lng);
+            
+            if (endLocation in shorthandInputs) {
+                const endBuilding = shorthandInputs[endLocation];
+                
+                // Update the route
+                routeCtrl.setWaypoints([
+                    L.latLng(userLat, userLng),
+                    L.latLng(buildings[endBuilding].coordinates)
+                ]);
+                
+                // Hide the search container and show the toggle button
+                document.getElementById('routing-search-container').classList.add('hidden');
+                document.getElementById('toggle-search-btn').classList.remove('hidden');
+                
+                return; // Important: exit early to avoid showing the error alert
+            }
+        }
+        
+        // Continue with the other conditions
         if (shorthandInputs[startLocation] && shorthandInputs[endLocation]) {
             // Update routing control waypoints
             routeCtrl.setWaypoints([
