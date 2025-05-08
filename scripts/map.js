@@ -25,6 +25,8 @@ var sel_start_flag = 0;
 
 let activeMarkers = [];
 
+// Add this near the beginning of your document ready function
+let currentTravelMode = 'pedestrian'; // Default to walking
 
 // add OpenStreetMap tile layer
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -1307,4 +1309,249 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    // Add this after your existing code that initializes the dropdowns
+    
+    // Populate the building list dropdown
+    const buildingListDropdown = document.getElementById('building-list');
+    
+    // Sort the building names alphabetically
+    const sortedBuildingNames = Object.keys(buildings).sort();
+    
+    // Create clickable elements for each building
+    sortedBuildingNames.forEach(buildingName => {
+        const buildingElement = document.createElement('p');
+        buildingElement.className = 'clickable-building';
+        buildingElement.textContent = buildingName;
+        
+        // Add click event to navigate to the building
+        buildingElement.addEventListener('click', function() {
+            // Center the map on the building
+            map.setView(buildings[buildingName].coordinates, 19);
+            
+            // Create and open a popup for the building
+            const popup = L.popup()
+                .setLatLng(buildings[buildingName].coordinates)
+                .setContent(`<div class="building-popup"><h3>${buildingName}</h3></div>`)
+                .openOn(map);
+            
+            // Close dropdown after selection
+            const dropdown = document.querySelector('.dropdown');
+            dropdown.classList.remove('active');
+        });
+        
+        buildingListDropdown.appendChild(buildingElement);
+    });
+
+    // Add scroll buttons to the building list - one above and one below
+    const buildingList = document.getElementById('building-list');
+
+    // Create up button and insert before the list
+    const scrollUpBtn = document.createElement('button');
+    scrollUpBtn.className = 'scroll-btn scroll-btn-up';
+    scrollUpBtn.textContent = '▲'; // Just the up arrow
+    scrollUpBtn.addEventListener('click', function() {
+        buildingList.scrollBy({
+            top: -100,
+            behavior: 'smooth'
+        });
+    });
+
+    // Insert the up button before the building list
+    buildingList.parentNode.insertBefore(scrollUpBtn, buildingList);
+
+    // Create down button and insert after the list
+    const scrollDownBtn = document.createElement('button');
+    scrollDownBtn.className = 'scroll-btn scroll-btn-down';
+    scrollDownBtn.textContent = '▼'; // Just the down arrow
+    scrollDownBtn.addEventListener('click', function() {
+        buildingList.scrollBy({
+            top: 100,
+            behavior: 'smooth'
+        });
+    });
+
+    // Insert the down button after the building list
+    buildingList.parentNode.insertBefore(scrollDownBtn, buildingList.nextSibling);
+
+    // Travel mode buttons
+    const modeWalkBtn = document.getElementById('mode-walk');
+    const modeDriveBtn = document.getElementById('mode-drive');
+    const modeBikeBtn = document.getElementById('mode-bike');
+    
+    // Add click event listeners
+    modeWalkBtn.addEventListener('click', function() {
+        // function implementation to be removed
+    });
+    
+    modeDriveBtn.addEventListener('click', function() {
+        // function implementation to be removed
+    });
+    
+    modeBikeBtn.addEventListener('click', function() {
+        // function implementation to be removed
+    });
+    
+    // Function to set travel mode
+    function setTravelMode(mode, button) {
+        // function implementation to be removed
+    }
+    
+    // Function to set up the observer for route panel
+    function setupRouteObserver() {
+        // Wait for the container to be created
+        setTimeout(() => {
+            const routingContainer = document.querySelector('.leaflet-routing-container');
+            if (routingContainer) {
+                // Create observer
+                observer = new MutationObserver(function(mutations) {
+                    mutations.forEach(function(mutation) {
+                        if (mutation.attributeName === 'class') {
+                            const isCollapsed = routingContainer.classList.contains('leaflet-routing-container-hide');
+                            routingSearchContainer.classList.toggle('hidden', isCollapsed);
+                            
+                            if (isCollapsed) {
+                                // Store waypoints before clearing
+                                lastWaypoints = routeCtrl.getWaypoints()
+                                    .filter(wp => wp.latLng !== null)
+                                    .map(wp => L.latLng(wp.latLng.lat, wp.latLng.lng));
+                                
+                                // Clear route
+                                routeCtrl.setWaypoints([]);
+                                
+                                // Remove paw prints
+                                activeMarkers.forEach(marker => map.removeLayer(marker));
+                                activeMarkers = [];
+                            } else if (lastWaypoints.length >= 2) {
+                                // Restore route
+                                routeCtrl.setWaypoints(lastWaypoints);
+                            }
+                        }
+                    });
+                });
+                
+                // Start observing
+                observer.observe(routingContainer, { attributes: true });
+            }
+        }, 100); // Short delay to ensure container exists
+    }
+
+    // Call this in your document ready or initialization code
+    initializeRouting();
 });
+
+// Create variables to hold the global routing control and its initial travel mode
+let globalTravelMode = 'pedestrian'; // Default to walking
+
+// Function to initialize the routing control - called only once at startup
+function initializeRouting() {
+    // Create routing control with the initial travel mode
+    routeCtrl = L.Routing.control({
+        waypoints: [],
+        routeWhileDragging: true,
+        router: L.Routing.osrmv1({
+            serviceUrl: 'https://router.project-osrm.org/route/v1',
+            profile: globalTravelMode
+        }),
+        lineOptions: {
+            styles: [{color: 'black', opacity: 0.15, weight: 9}, 
+                    {color: '#FDB515', opacity: 0.8, weight: 6}]
+        },
+        formatter: customFormatter,
+        collapsible: true,
+        showAlternatives: false,
+        addWaypoints: false
+    }).addTo(map);
+    
+    // Setup the event listener for route calculation
+    routeCtrl.on('routeselected', onRouteSelected);
+    
+    // Setup observer for tracking UI state
+    setupRouteObserver();
+}
+
+// Event handler for route selection
+function onRouteSelected(e) {
+    // Handle paw print markers
+    const routeCoordinates = e.route.coordinates;
+    
+    // Clear previous paw prints
+    activeMarkers.forEach(marker => map.removeLayer(marker));
+    activeMarkers = [];
+    
+    // Place new paw prints
+    const intervalDistance = 25; // in meters
+    let accumulatedDistance = 0;
+    let lastPrintCoord = routeCoordinates[0];
+    
+    for (let i = 1; i < routeCoordinates.length; i++) {
+        const currentCoord = routeCoordinates[i];
+        const segmentDistance = lastPrintCoord.distanceTo(currentCoord);
+        
+        accumulatedDistance += segmentDistance;
+        
+        while (accumulatedDistance >= intervalDistance) {
+            // Calculate paw print placement
+            const overshoot = accumulatedDistance - intervalDistance;
+            const fraction = 1 - (overshoot / segmentDistance);
+            
+            const lat = lastPrintCoord.lat + fraction * (currentCoord.lat - lastPrintCoord.lat);
+            const lng = lastPrintCoord.lng + fraction * (currentCoord.lng - lastPrintCoord.lng);
+            
+            const pawPrintMarker = L.marker([lat, lng], { icon: pawPrintIcon }).addTo(map);
+            activeMarkers.push(pawPrintMarker);
+            
+            accumulatedDistance -= intervalDistance;
+            lastPrintCoord = L.latLng(lat, lng);
+        }
+        
+        lastPrintCoord = currentCoord;
+    }
+    
+    // Handle mobile instructions if needed
+    if (isMobile && window.mobileRoutingElements) {
+        // Process and display mobile instructions
+    }
+}
+
+// Function to set up the observer for route panel
+function setupRouteObserver() {
+    // Wait for the container to be created
+    setTimeout(() => {
+        const routingContainer = document.querySelector('.leaflet-routing-container');
+        if (routingContainer) {
+            // Create observer
+            observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    if (mutation.attributeName === 'class') {
+                        const isCollapsed = routingContainer.classList.contains('leaflet-routing-container-hide');
+                        routingSearchContainer.classList.toggle('hidden', isCollapsed);
+                        
+                        if (isCollapsed) {
+                            // Store waypoints before clearing
+                            lastWaypoints = routeCtrl.getWaypoints()
+                                .filter(wp => wp.latLng !== null)
+                                .map(wp => L.latLng(wp.latLng.lat, wp.latLng.lng));
+                            
+                            // Clear route
+                            routeCtrl.setWaypoints([]);
+                            
+                            // Remove paw prints
+                            activeMarkers.forEach(marker => map.removeLayer(marker));
+                            activeMarkers = [];
+                        } else if (lastWaypoints.length >= 2) {
+                            // Restore route
+                            routeCtrl.setWaypoints(lastWaypoints);
+                        }
+                    }
+                });
+            });
+            
+            // Start observing
+            observer.observe(routingContainer, { attributes: true });
+        }
+    }, 100); // Short delay to ensure container exists
+}
+
+// Call this in your document ready or initialization code
+initializeRouting();

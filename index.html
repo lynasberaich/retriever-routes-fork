@@ -65,12 +65,9 @@
                 <button type="submit">
                     <img class="down-icon" src="assets/images/chevron.png" alt="down icon">
                 </button>
-                <p> UMBC Campus Building List</p>
-                <div class="dropdown-content">
-                    <p>Library</p>
-                    <p>Engineering Building</p>
-                    <p>Administration</p>
-                    <p>Commons</p>
+                <p>UMBC Campus Building List</p>
+                <div class="dropdown-content" id="building-list">
+                    <!-- Buildings will be populated here via JavaScript -->
                 </div>
             </div>
 
@@ -91,7 +88,7 @@
                 </div>
             </div>
 
-
+            <!--- 
             <div class="item dropdown">
                 <button type="submit">
                     <img class="down-icon" src="assets/images/chevron.png" alt="down icon">
@@ -103,10 +100,32 @@
                     <p>Food</p>
                 </div>
             </div>
+            -->
+            
             
         </div>
 
     </div>
+    
+    <!-- Travel Mode Selector -->
+    <div class="travel-mode-container">
+        <p>Travel Mode:</p>
+        <div class="travel-mode-buttons">
+            <button id="mode-walk" class="mode-btn active">
+                <img src="assets/images/walk.png" alt="Walk">
+                <span>Walk</span>
+            </button>
+            <button id="mode-drive" class="mode-btn">
+                <img src="assets/images/car.png" alt="Drive">
+                <span>Drive</span>
+            </button>
+            <button id="mode-bike" class="mode-btn">
+                <img src="assets/images/bike.png" alt="Bike">
+                <span>Bike</span>
+            </button>
+        </div>
+    </div>
+    
     <div class="link-box">
         <a href="https://docs.google.com/forms/d/e/1FAIpQLSfB9mUc9NH2pTSUioCg9aDOrtz8vkHRiDjg9obxUka_UeCJ5w/viewform?usp=header" target="_blank">Give us Feedback!</a>
     </div>
