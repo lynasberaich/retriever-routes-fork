@@ -989,27 +989,101 @@ document.addEventListener('DOMContentLoaded', function() {
             startInput.value = "Getting your location...";
             useMyLocationBtn.classList.add('loading');
             
-            // Start tracking and add handler for first position
+            // Start tracking
             startLocationTracking();
             
             // Set up a one-time position handler
-            const positionHandler = function(e) {
+            const positionHandler = function(position) {
                 // When we get first position, update input
                 startInput.value = "My Location";
                 useMyLocationBtn.classList.remove('loading');
                 
                 // Store coordinates
-                startInput.dataset.lat = userLocationMarker.getLatLng().lat;
-                startInput.dataset.lng = userLocationMarker.getLatLng().lng;
+                startInput.dataset.lat = position.coords.latitude;
+                startInput.dataset.lng = position.coords.longitude;
                 
                 // Remove this event listener (only needed once)
-                userLocationMarker.off('add', positionHandler);
+                navigator.geolocation.clearWatch(locationWatchId);
+                locationWatchId = navigator.geolocation.watchPosition(
+                    function(pos) {
+                        const lat = pos.coords.latitude;
+                        const lng = pos.coords.longitude;
+                        const accuracy = pos.coords.accuracy;
+                        
+                        // Update marker position
+                        userLocationMarker.setLatLng([lat, lng]);
+                        
+                        // Update accuracy circle
+                        if (userLocationMarker.accuracyCircle) {
+                            userLocationMarker.accuracyCircle.setLatLng([lat, lng]).setRadius(accuracy);
+                        } else {
+                            userLocationMarker.accuracyCircle = L.circle([lat, lng], {
+                                radius: accuracy,
+                                color: '#4285F4',
+                                fillColor: '#4285F433',
+                                weight: 1
+                            }).addTo(map);
+                        }
+                        
+                        // Update input field
+                        startInput.dataset.lat = lat;
+                        startInput.dataset.lng = lng;
+                        
+                        // Update route if needed
+                        updateRouteIfUsingMyLocation();
+                    },
+                    function(error) {
+                        console.error('Error getting location:', error);
+                        stopLocationTracking();
+                        
+                        switch(error.code) {
+                            case error.PERMISSION_DENIED:
+                                alert("Location tracking was denied. Please enable location services.");
+                                break;
+                            case error.POSITION_UNAVAILABLE:
+                                alert("Location information is unavailable.");
+                                break;
+                            case error.TIMEOUT:
+                                alert("The request to get your location timed out.");
+                                break;
+                            default:
+                                alert("An unknown error occurred while tracking your location.");
+                                break;
+                        }
+                    },
+                    {
+                        enableHighAccuracy: true,
+                        timeout: 10000,
+                        maximumAge: 0
+                    }
+                );
             };
             
-            // Listen for the marker being added to the map
-            if (userLocationMarker) {
-                userLocationMarker.on('add', positionHandler);
-            }
+            // Get initial position
+            navigator.geolocation.getCurrentPosition(positionHandler, function(error) {
+                console.error('Error getting initial position:', error);
+                startInput.value = "Location unavailable";
+                useMyLocationBtn.classList.remove('loading');
+                
+                switch(error.code) {
+                    case error.PERMISSION_DENIED:
+                        alert("Location access was denied. Please enable location services.");
+                        break;
+                    case error.POSITION_UNAVAILABLE:
+                        alert("Location information is unavailable.");
+                        break;
+                    case error.TIMEOUT:
+                        alert("The request to get your location timed out.");
+                        break;
+                    default:
+                        alert("An unknown error occurred while getting your location.");
+                        break;
+                }
+            }, {
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 0
+            });
         }
     });
 
