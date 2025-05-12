@@ -28,6 +28,11 @@ let activeMarkers = [];
 // Add this near the beginning of your document ready function
 let currentTravelMode = 'pedestrian'; // Default to walking
 
+// Add these variables at the top of your file near other global variables
+let userLocationMarker = null;
+let locationWatchId = null;
+let isTrackingLocation = false;
+
 // add OpenStreetMap tile layer
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; OpenStreetMap contributors',
@@ -968,92 +973,44 @@ document.addEventListener('DOMContentLoaded', function() {
     const startInput = document.getElementById('route-start');
 
     useMyLocationBtn.addEventListener('click', function() {
-        // First, check if geolocation is available in the browser
-        if (!navigator.geolocation) {
-            alert("Geolocation is not supported by your browser");
-            return;
-        }
-        
-        // Add loading state
-        useMyLocationBtn.classList.add('loading');
-        
-        // Let the user know something is happening
-        startInput.value = "Getting your location...";
-        
-        // Get the user's position with modified options for better reliability
-        navigator.geolocation.getCurrentPosition(
-            // Success callback
-            function(position) {
-                const lat = position.coords.latitude;
-                const lng = position.coords.longitude;
-                
-                // Check if the location is within or near UMBC bounds
-                const userLocation = L.latLng(lat, lng);
-                const umbcCenter = L.latLng(39.2557, -76.7110);
-                const distanceToUMBC = userLocation.distanceTo(umbcCenter) / 1000; // in km
-                
-                if (distanceToUMBC > 10) { // If more than 10km away from UMBC
-                    if (!confirm("You appear to be far from UMBC campus. Continue using this location?")) {
-                        useMyLocationBtn.classList.remove('loading');
-                        startInput.value = ""; // Clear the "Getting location..." message
-                        return;
-                    }
-                }
-                
-                // Set user location as the start point in the routing form
-                startInput.value = "My Location";
-                
-                // Store coordinates in a data attribute for later use
-                startInput.dataset.lat = lat;
-                startInput.dataset.lng = lng;
-                
-                // If the routing panel is visible and destination is set, update route
-                const endInput = document.getElementById('route-end');
-                if (endInput.value && !routingContainer.classList.contains('leaflet-routing-container-hide')) {
-                    // Find the closest point on UMBC campus
-                    const closestPoint = getClosestPointOnCampus(userLocation);
-                    
-                    // If there's an end location set, update the route
-                    if (endInput.value in shorthandInputs) {
-                        const endBuilding = shorthandInputs[endInput.value.toLowerCase()];
-                        
-                        routeCtrl.setWaypoints([
-                            L.latLng(closestPoint.lat, closestPoint.lng),
-                            L.latLng(buildings[endBuilding].coordinates)
-                        ]);
-                    }
-                }
-                
-                // Remove loading state
-                useMyLocationBtn.classList.remove('loading');
-            },
-            // Error callback
-            function(error) {
-                useMyLocationBtn.classList.remove('loading');
-                startInput.value = ""; // Clear the "Getting location..." message
-                
-                switch(error.code) {
-                    case error.PERMISSION_DENIED:
-                        alert("Location access was denied. Please enable location services for this site in your browser settings.");
-                        break;
-                    case error.POSITION_UNAVAILABLE:
-                        alert("Location information is unavailable. Please try again later.");
-                        break;
-                    case error.TIMEOUT:
-                        alert("The request to get your location timed out. Please try again with a less accurate location.");
-                        break;
-                    default:
-                        alert("An unknown error occurred while trying to access your location.");
-                        break;
-                }
-            },
-            // Modified options for better reliability
-            {
-                enableHighAccuracy: false,  // Use less accurate but faster method
-                timeout: 20000,            // Increase timeout to 20 seconds
-                maximumAge: 60000          // Accept positions up to 1 minute old
+        // Toggle location tracking
+        if (isTrackingLocation) {
+            // If already tracking, just update the start input
+            const startInput = document.getElementById('route-start');
+            startInput.value = "My Location";
+            
+            if (userLocationMarker) {
+                const position = userLocationMarker.getLatLng();
+                startInput.dataset.lat = position.lat;
+                startInput.dataset.lng = position.lng;
             }
-        );
+        } else {
+            // If not tracking, start tracking
+            startInput.value = "Getting your location...";
+            useMyLocationBtn.classList.add('loading');
+            
+            // Start tracking and add handler for first position
+            startLocationTracking();
+            
+            // Set up a one-time position handler
+            const positionHandler = function(e) {
+                // When we get first position, update input
+                startInput.value = "My Location";
+                useMyLocationBtn.classList.remove('loading');
+                
+                // Store coordinates
+                startInput.dataset.lat = userLocationMarker.getLatLng().lat;
+                startInput.dataset.lng = userLocationMarker.getLatLng().lng;
+                
+                // Remove this event listener (only needed once)
+                userLocationMarker.off('add', positionHandler);
+            };
+            
+            // Listen for the marker being added to the map
+            if (userLocationMarker) {
+                userLocationMarker.on('add', positionHandler);
+            }
+        }
     });
 
     // Helper function to get the closest point on campus
@@ -1438,6 +1395,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Call this in your document ready or initialization code
     initializeRouting();
+
+    // Add event listener for the tracking toggle
+    const trackToggle = document.getElementById('track-location');
+    
+    if (trackToggle) {
+        trackToggle.addEventListener('change', function() {
+            if (this.checked) {
+                startLocationTracking();
+            } else {
+                stopLocationTracking();
+            }
+        });
+    }
 });
 
 // Create variables to hold the global routing control and its initial travel mode
@@ -1555,3 +1525,147 @@ function setupRouteObserver() {
 
 // Call this in your document ready or initialization code
 initializeRouting();
+
+// Add this function to handle location tracking
+function startLocationTracking() {
+    // Don't start tracking if already tracking
+    if (isTrackingLocation) return;
+    
+    // Check if geolocation is available
+    if (!navigator.geolocation) {
+        alert("Geolocation is not supported by your browser");
+        return;
+    }
+    
+    // Create a user location marker with a blue dot
+    if (!userLocationMarker) {
+        const userIcon = L.divIcon({
+            className: 'user-location-marker',
+            iconSize: [24, 24],
+            iconAnchor: [12, 12]
+        });
+        userLocationMarker = L.marker([0, 0], { icon: userIcon }).addTo(map);
+        userLocationMarker.bindPopup("You are here").openPopup();
+    }
+    
+    // Start watching position
+    locationWatchId = navigator.geolocation.watchPosition(
+        // Success callback
+        function(position) {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+            const accuracy = position.coords.accuracy;
+            
+            // Update marker position
+            userLocationMarker.setLatLng([lat, lng]);
+            
+            // Add an accuracy circle
+            if (userLocationMarker.accuracyCircle) {
+                userLocationMarker.accuracyCircle.setLatLng([lat, lng]).setRadius(accuracy);
+            } else {
+                userLocationMarker.accuracyCircle = L.circle([lat, lng], {
+                    radius: accuracy,
+                    color: '#4285F4',
+                    fillColor: '#4285F433',
+                    weight: 1
+                }).addTo(map);
+            }
+            
+            // Update input field if it's set to "My Location"
+            const startInput = document.getElementById('route-start');
+            if (startInput.value === "My Location") {
+                startInput.dataset.lat = lat;
+                startInput.dataset.lng = lng;
+                
+                // If there's an active route with "My Location" as starting point, update it
+                updateRouteIfUsingMyLocation();
+            }
+            
+            isTrackingLocation = true;
+        },
+        // Error callback
+        function(error) {
+            console.error('Error getting location:', error);
+            stopLocationTracking();
+            
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    alert("Location tracking was denied. Please enable location services.");
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    alert("Location information is unavailable.");
+                    break;
+                case error.TIMEOUT:
+                    alert("The request to get your location timed out.");
+                    break;
+                default:
+                    alert("An unknown error occurred while tracking your location.");
+                    break;
+            }
+        },
+        // Options
+        {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 0
+        }
+    );
+}
+
+// Function to stop tracking location
+function stopLocationTracking() {
+    if (locationWatchId !== null) {
+        navigator.geolocation.clearWatch(locationWatchId);
+        locationWatchId = null;
+        
+        // Remove marker and accuracy circle
+        if (userLocationMarker) {
+            if (userLocationMarker.accuracyCircle) {
+                map.removeLayer(userLocationMarker.accuracyCircle);
+                userLocationMarker.accuracyCircle = null;
+            }
+            map.removeLayer(userLocationMarker);
+            userLocationMarker = null;
+        }
+        
+        isTrackingLocation = false;
+    }
+}
+
+// Function to update route if using My Location
+function updateRouteIfUsingMyLocation() {
+    const startInput = document.getElementById('route-start');
+    const endInput = document.getElementById('route-end');
+    
+    if (startInput.value === "My Location" && 
+        startInput.dataset.lat && 
+        startInput.dataset.lng && 
+        endInput.value && 
+        !routingContainer.classList.contains('leaflet-routing-container-hide')) {
+        
+        const userLat = parseFloat(startInput.dataset.lat);
+        const userLng = parseFloat(startInput.dataset.lng);
+        const endLocation = endInput.value.trim().toLowerCase();
+        
+        if (endLocation in shorthandInputs) {
+            const endBuilding = shorthandInputs[endLocation];
+            
+            // Get the current waypoints
+            const waypoints = routeCtrl.getWaypoints();
+            
+            // Only update if we have exactly two waypoints (start and end)
+            if (waypoints.length === 2) {
+                // Update only the start waypoint
+                waypoints[0].latLng = L.latLng(userLat, userLng);
+                routeCtrl.setWaypoints(waypoints);
+            }
+        }
+    }
+}
+
+// Clean up tracking when leaving the page
+window.addEventListener('beforeunload', function() {
+    if (locationWatchId !== null) {
+        navigator.geolocation.clearWatch(locationWatchId);
+    }
+});

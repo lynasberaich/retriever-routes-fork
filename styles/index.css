@@ -865,3 +865,34 @@ body.font-size-large button {
     color: black;
     font-weight: bold;
 }
+
+/* User location marker style */
+.user-location-marker {
+    background-color: #4285F4;
+    border: 2px solid white;
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.5), 0 0 5px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+}
+
+/* Pulse animation for the marker */
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.2); opacity: 0.8; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.user-location-marker {
+    animation: pulse 2s infinite;
+}
+
+/* Location tracking toggle styles */
+.location-tracking-toggle {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.location-tracking-toggle input {
+    margin-right: 8px;
+}
