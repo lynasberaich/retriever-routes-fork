@@ -14,7 +14,8 @@ var map = L.map('map', {
     minZoom: 15, // Prevent zooming out too far
     maxZoom: 22, // Maximum zoom level
     zoomSnap: 0.5, // Allow half-step zoom levels
-    bounceAtZoomLimits: true // Bounce effect when trying to zoom beyond limits
+    bounceAtZoomLimits: true, // Bounce effect when trying to zoom beyond limits
+    rotate: true // Enable rotation
 }).setView([39.2557, -76.7110], 16.5); // Zoom level adjusted for campus view
 
 var selectedParkStart = "";
@@ -1671,22 +1672,8 @@ function startLocationTracking() {
             
             // Handle map rotation based on heading
             if (heading !== null && heading !== undefined) {
-                // Smoothly rotate the map
-                const targetRotation = -heading; // Negative because we want to rotate the map, not the marker
-                const rotationDiff = targetRotation - mapRotation;
-                
-                // Normalize the rotation difference to be between -180 and 180 degrees
-                const normalizedDiff = ((rotationDiff + 180) % 360) - 180;
-                
-                // Apply smooth rotation
-                mapRotation += normalizedDiff * 0.1; // Adjust the 0.1 factor to change rotation speed
-                
-                // Apply the rotation to the map container
-                const mapContainer = map.getContainer();
-                mapContainer.style.transform = `rotate(${mapRotation}deg)`;
-                
-                // Update the marker's rotation to counter the map rotation
-                userLocationMarker.getElement().style.transform = `rotate(${-mapRotation}deg)`;
+                // Rotate the map to match the heading
+                map.setBearing(-heading); // Negative because we want to rotate the map, not the marker
             }
             
             // Update input field if it's set to "My Location"
@@ -1737,9 +1724,7 @@ function stopLocationTracking() {
         locationWatchId = null;
         
         // Reset map rotation
-        mapRotation = 0;
-        const mapContainer = map.getContainer();
-        mapContainer.style.transform = '';
+        map.setBearing(0);
         
         // Remove marker and accuracy circle
         if (userLocationMarker) {
