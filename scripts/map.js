@@ -32,6 +32,8 @@ let currentTravelMode = 'pedestrian'; // Default to walking
 let userLocationMarker = null;
 let locationWatchId = null;
 let isTrackingLocation = false;
+let lastHeading = null;
+let mapRotation = 0;
 
 // add OpenStreetMap tile layer
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -1643,13 +1645,14 @@ function startLocationTracking() {
         userLocationMarker.bindPopup("You are here").openPopup();
     }
     
-    // Start watching position
+    // Start watching position with heading
     locationWatchId = navigator.geolocation.watchPosition(
         // Success callback
         function(position) {
             const lat = position.coords.latitude;
             const lng = position.coords.longitude;
             const accuracy = position.coords.accuracy;
+            const heading = position.coords.heading; // Get heading in degrees
             
             // Update marker position
             userLocationMarker.setLatLng([lat, lng]);
@@ -1664,6 +1667,26 @@ function startLocationTracking() {
                     fillColor: '#4285F433',
                     weight: 1
                 }).addTo(map);
+            }
+            
+            // Handle map rotation based on heading
+            if (heading !== null && heading !== undefined) {
+                // Smoothly rotate the map
+                const targetRotation = -heading; // Negative because we want to rotate the map, not the marker
+                const rotationDiff = targetRotation - mapRotation;
+                
+                // Normalize the rotation difference to be between -180 and 180 degrees
+                const normalizedDiff = ((rotationDiff + 180) % 360) - 180;
+                
+                // Apply smooth rotation
+                mapRotation += normalizedDiff * 0.1; // Adjust the 0.1 factor to change rotation speed
+                
+                // Apply the rotation to the map container
+                const mapContainer = map.getContainer();
+                mapContainer.style.transform = `rotate(${mapRotation}deg)`;
+                
+                // Update the marker's rotation to counter the map rotation
+                userLocationMarker.getElement().style.transform = `rotate(${-mapRotation}deg)`;
             }
             
             // Update input field if it's set to "My Location"
@@ -1712,6 +1735,11 @@ function stopLocationTracking() {
     if (locationWatchId !== null) {
         navigator.geolocation.clearWatch(locationWatchId);
         locationWatchId = null;
+        
+        // Reset map rotation
+        mapRotation = 0;
+        const mapContainer = map.getContainer();
+        mapContainer.style.transform = '';
         
         // Remove marker and accuracy circle
         if (userLocationMarker) {
