@@ -690,7 +690,7 @@ const routeCtrl = L.Routing.control({
         travelMode: travel,
         unitSystem: google.maps.UnitSystem.IMPERIAL
     }),
- //UI_pawprints
+    //UI_pawprints
     lineOptions: {
         styles: [{
             color: 'transparent',  // Change to a visible color
@@ -704,12 +704,33 @@ const routeCtrl = L.Routing.control({
 
     routeWhileDragging: true,
     position: 'bottomleft',
-    fitSelectedRoutes: true,
+    fitSelectedRoutes: false, // Disable automatic route fitting
     addWaypoints: false,
     collapsible: true,
-  }).addTo(map);
+}).addTo(map);
 
-  routeCtrl.on('routeselected', function(event) {
+// Add a button to recenter the route when needed
+const recenterButton = L.control({ position: 'bottomright' });
+recenterButton.onAdd = function(map) {
+    const div = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
+    div.innerHTML = `
+        <a href="#" title="Recenter route" style="width: 30px; height: 30px; line-height: 30px; display: block; text-align: center; text-decoration: none; color: black; background: white;">
+            <span style="font-size: 20px;">⟲</span>
+        </a>
+    `;
+    div.onclick = function(e) {
+        e.preventDefault();
+        const waypoints = routeCtrl.getWaypoints();
+        if (waypoints.length >= 2) {
+            const bounds = L.latLngBounds(waypoints.map(wp => wp.latLng));
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+    };
+    return div;
+};
+recenterButton.addTo(map);
+
+routeCtrl.on('routeselected', function(event) {
     const routeCoordinates = event.route.coordinates;
 
     // Clear previous paw prints
