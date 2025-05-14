@@ -1624,7 +1624,7 @@ function setupRouteObserver() {
 // Call this in your document ready or initialization code
 initializeRouting();
 
-// Add this function to handle location tracking
+// Function to start location tracking
 function startLocationTracking() {
     // Don't start tracking if already tracking
     if (isTrackingLocation) return;
@@ -1633,17 +1633,6 @@ function startLocationTracking() {
     if (!navigator.geolocation) {
         alert("Geolocation is not supported by your browser");
         return;
-    }
-    
-    // Create a user location marker with a blue dot
-    if (!userLocationMarker) {
-        const userIcon = L.divIcon({
-            className: 'user-location-marker',
-            iconSize: [24, 24],
-            iconAnchor: [12, 12]
-        });
-        userLocationMarker = L.marker([0, 0], { icon: userIcon }).addTo(map);
-        userLocationMarker.bindPopup("You are here").openPopup();
     }
     
     // Start watching position with heading
@@ -1655,19 +1644,18 @@ function startLocationTracking() {
             const accuracy = position.coords.accuracy;
             const heading = position.coords.heading; // Get heading in degrees
             
-            // Update marker position
-            userLocationMarker.setLatLng([lat, lng]);
-            
-            // Add an accuracy circle
-            if (userLocationMarker.accuracyCircle) {
+            // Update or create accuracy circle
+            if (userLocationMarker && userLocationMarker.accuracyCircle) {
                 userLocationMarker.accuracyCircle.setLatLng([lat, lng]).setRadius(accuracy);
             } else {
-                userLocationMarker.accuracyCircle = L.circle([lat, lng], {
-                    radius: accuracy,
-                    color: '#4285F4',
-                    fillColor: '#4285F433',
-                    weight: 1
-                }).addTo(map);
+                userLocationMarker = {
+                    accuracyCircle: L.circle([lat, lng], {
+                        radius: accuracy,
+                        color: '#4285F4',
+                        fillColor: '#4285F433',
+                        weight: 1
+                    }).addTo(map)
+                };
             }
             
             // Handle map rotation based on heading
@@ -1726,13 +1714,9 @@ function stopLocationTracking() {
         // Reset map rotation
         map.setBearing(0);
         
-        // Remove marker and accuracy circle
-        if (userLocationMarker) {
-            if (userLocationMarker.accuracyCircle) {
-                map.removeLayer(userLocationMarker.accuracyCircle);
-                userLocationMarker.accuracyCircle = null;
-            }
-            map.removeLayer(userLocationMarker);
+        // Remove accuracy circle
+        if (userLocationMarker && userLocationMarker.accuracyCircle) {
+            map.removeLayer(userLocationMarker.accuracyCircle);
             userLocationMarker = null;
         }
         
