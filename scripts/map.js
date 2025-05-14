@@ -11,7 +11,7 @@ var umbcBounds = [
 var map = L.map('map', {
     maxBounds: umbcBounds, // Set the max bounds
     maxBoundsViscosity: 1.0, // Ensures the map bounces back when dragged out of bounds
-    minZoom: 15, // Prevent zooming out too far
+    minZoom: 13, // Allow zooming out further
     maxZoom: 22, // Maximum zoom level
     zoomSnap: 0.5, // Allow half-step zoom levels
     bounceAtZoomLimits: true, // Bounce effect when trying to zoom beyond limits
