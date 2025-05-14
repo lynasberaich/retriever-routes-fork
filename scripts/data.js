@@ -354,12 +354,12 @@ export const buildings = {
         nearest_lot: ["PL14"]
     },
     "Facilities Management Building": {
-        coordinates: [39.25197520862123, -76.70744658390562],
+        coordinates: [39.252694810222124, -76.7044304178826],
         resources: [],
         food: [],
         nearest_lot: ["PL26"]
     },
-    "Chesapeake Arena": {
+    "Chesapeake Employers Insurance Arena": {
         coordinates: [39.25203973575942, -76.70741319575494],
         resources: [],
         food: [],
@@ -398,7 +398,7 @@ export const buildings = {
             name: "The Commons",
             hours: "Monday-Friday: 7am-11pm<br>Saturday-Sunday: 9am-10pm",
             description: "The Commons is UMBC's community center that houses dining options, meeting spaces, and offices.",
-            facilities: ["True Grits Dining Hall", "Yum Shoppe", "Gameroom", "Bookstore"]
+            facilities: ["Cafeteria dining", "Yum Shoppe", "Gameroom", "Bookstore"]
         }
     },
     "Lecture Hall 1": {
@@ -446,7 +446,7 @@ export const buildings = {
             name: "Math & Psychology Building",
             hours: "Monday-Friday: 9am-4pm",
             description: "UMBC's Math and Pyschology Building is home to a variety of student based offices and classrooms.",
-            facilities: ["Career Center", "Student Disability Services Office", "Facilities Management Building", "Pyschology Case Study Spaces"]
+            facilities: ["Career Center", "Student Disability Services Office", "Pyschology Case Study Spaces"]
         }
     },
     "Sondheim Building": {
@@ -591,13 +591,7 @@ export const buildings = {
         coordinates: [39.250573889558346, -76.70749632656262],
         resources: [],
         food: [],
-        nearest_lot: ["PL14", "PL28", "PL27"],
-        info:{
-            name: "Interdisciplinary Life Sciences Building",
-            hours: "",
-            description: "",
-            facilities: []
-        }
+        nearest_lot: ["PL14", "PL28", "PL27"]
     },
     "UMBC Stadium Ticket Booth": {
         coordinates: [39.25050758004129, -76.70860137120687],
@@ -607,6 +601,13 @@ export const buildings = {
     },
     "Retriever Soccer Park Ticket Booth": {
         coordinates: [39.25184614891174, -76.70568534933862],
+        resources: [],
+        food: [],
+        nearest_lot: ["PL14"]
+    },
+    
+    "Retriever Soccer Park": {
+        coordinates: [39.251309902675324, -76.7050798703485],
         resources: [],
         food: [],
         nearest_lot: ["PL14"]
@@ -933,7 +934,7 @@ export const parking = {
         hours: 'Always enforced'
     },
     "ACBL23": { // arena entrance
-        name: "Chesepeake Arena Accessible Parking",
+        name: "Chesapeake Arena Accessible Parking",
         coordinates: [39.25231424670389, -76.7088084854659],
         permit: ["♿"],
         hours: 'Always enforced'
@@ -1060,29 +1061,65 @@ export const resources = {
         name: "ResLife Office",
         buildingID: "RL23",
         resourceType: "",
-        coordinates: [39.25679189440456, -76.70996169291159]
+        coordinates: [39.25679189440456, -76.70996169291159],
+        info:{
+            name: "Residential Life Office",
+            hours: "Monday-Friday: 8:30am-5pm<br>Saturday-Sunday: Closed",
+            description: "The Residential Life Office is responsible for providing facilities, services, and programs to support and enhance the lives of students living on campus.",
+            number: "410-455-2591"
+        }
     },
     "OF02": {
-        name: "ResLife Facilities Office",
+        name: "Facilities Management Office",
         buildingID: "RL23",
         resourceType: "",
-        coordinates: [39.25667980779895, -76.7092930617115]
+        coordinates: [39.252694810222124, -76.7044304178826],
+        info:{
+            name: "Facilities Management Office",
+            hours: "Monday-Friday: 8am-5pm<br>Saturday-Sunday: Closed",
+            description: "Facilities Management is responsible for the planning, design, construction, operations, and maintenance of UMBC's facilities, grounds, and utilities.",
+            number: "410-455-3219"
+        }
     },
     "OF03": {
         name: "Retriever Learning Center",
         buildingID: "SR03",
         resourceType: "",
-        coordinates: [39.25646127002805, -76.71130580586146]
+        coordinates: [39.25646127002805, -76.71130580586146],
+        info:{
+            name: "Retriever Learning Center",
+            hours: "Open 24/7 to students (swipe access required)",
+            description: "The RLC is UMBC's best place for lively group study, scholarly discussion, collaboration, and academic coaching. ",
+            number: "410-455-2354"
+        }
     },
     "OF04": {
         name: "Financial Aid and Scholarship Office",
         buildingID: "SR03",
         resourceType: "",
-        coordinates: [39.256625671367885, -76.71234270259082]
+        coordinates: [39.256625671367885, -76.71234270259082],
+        info:{
+            name: "900 Walker",
+            hours: "Monday-Friday: 8:30am-4:30pm<br>Saturday-Sunday: Closed",
+            description: "The Financial Aid and Scholarships office is here to help you with financial needs relating to grants, work study, student load, parent loans, scholarships, and other awards.",
+            number: "410-455-2387"
+        }
+    },
+    "OF05": {
+        name: "Registrar's Office",
+        buildingID: "AC10",
+        resourceType: "",
+        coordinates: [39.25361599549015, -76.7131785614367],
+        info:{
+            name: "Registrar's Office",
+            hours: "Monday-Friday: 8:30am-4:30pm<br>Saturday-Sunday: Closed",
+            description: "The Registrar's Office is responsible for maintaining records, enrollment, scheduling, undergraduate guidance, compliance, and related services.",
+            number: "410-455-2387"
+        }
     }
 };
 
-export const buildingNames = {
+export const buildingIdToNames = {
     "EX01": "900 Walker",
     "RL01": "Walker Avenue Apartments",
     "EX02": "Army ROTC",
@@ -1128,7 +1165,7 @@ export const buildingNames = {
     "AC02": "Physics Building",
     "EX08": "Warehouse",
     "EX09": "Facilities Management Building",
-    "AT01": "Chesapeake Arena",
+    "AT01": "Chesapeake Employers Insurance Arena",
     "AC03": "Interdisciplinary Life Sciences Building",
     "SR04": "The Commons",
     "AC04": "Lecture Hall 1",
@@ -1157,88 +1194,700 @@ export const buildingNames = {
 };
 
 export const shorthandInputs = {
-    "pahb": "Performing Arts & Humanities Building",
-    "ilsb": "Interdisciplinary Life Sciences Building",
-    "ite": "Information Technology/Engineering Building",
-    "uc": "University Center",
-    "900 walker": "900 Walker",
-    "walker avenue apartments": "Walker Avenue Apartments",
-    "army rotc": "Army ROTC",
-    "naval rotc": "Naval ROTC",
-    "alumni house": "Alumni House",
-    "west hill apartments cho (choptank)": "West Hill Apartments CHO (Choptank)",
-    "west hill apartments tan": "West Hill Apartments TAN (Tuckahoe)",
-    "west hill apartments mag (magothy)": "West Hill Apartments MAG (Magothy)",
-    "west hill apartments wye (wye)": "West Hill Apartments WYE (Wye)",
-    "west hill apartment sev (severn)": "West Hill Apartment SEV (Severn)",
-    "west hill apartments chs (chester)": "West Hill Apartments CHS (Chester)",
-    "apartment community center (acc)": "Apartment Community Center (ACC)",
-    "terrace apartments gun (gunpowder)": "Terrace Apartments GUN (Gunpowder)",
-    "terrace apartments nan (nanticoke)": "Terrace Apartments NAN (Nanticoke)",
-    "terrace apartments mon (monocacy)": "Terrace Apartments MON (Monocacy)",
-    "terrace apartments tuc (tuckahoe)": "Terrace Apartments TUC (Tuckahoe)",
-    "terrace apartments chi (chincoteague)": "Terrace Apartments CHI (Chincoteague)",
-    "terrace apartments ant (antietam)": "Terrace Apartments ANT (Antietam)",
-    "terrace apartments sas (sassafras)": "Terrace Apartments SAS (Sassafras)",
-    "terrace apartments wic (wicomico)": "Terrace Apartments WIC (Wicomico)",
-    "hillside apartments ptx (patuxent)": "Hillside Apartments PTX (Patuxent)",
-    "hillside apartments elk (elk)": "Hillside Apartments ELK (Elk)",
-    "hillside apartments dpc (deep creek)": "Hillside Apartments DPC (Deep Creek)",
-    "hillside apartments cas (casselman)": "Hillside Apartments CAS (Casselman)",
-    "hillside apartments bre (breton)": "Hillside Apartments BRE (Breton)",
-    "hillside apartments sdl (sideling)": "Hillside Apartments SDL (Sideling)",
-    "hillside apartments poc (pocomoke)": "Hillside Apartments POC (Pocomoke)",
-    "hillside apartments man (manokin)": "Hillside Apartments MAN (Manokin)",
-    "erickson hall": "Erickson Hall",
-    "ymca preschool center": "YMCA Preschool Center",
-    "harbor hall": "Harbor Hall",
-    "chesapeake hall": "Chesapeake Hall",
-    "satellite plant": "Satellite Plant",
-    "the center for well-being": "The Center for Well-Being",
-    "susquehanna hall": "Susquehanna Hall",
-    "true grits": "True Grits",
-    "potomac hall": "Potomac Hall",
-    "patapsco hall": "Patapsco Hall",
-    "greenhouse": "Greenhouse",
-    "central plant": "Central Plant",
-    "albin o. kuhn library & gallery": "Albin O. Kuhn Library & Gallery",
-    "public policy building": "Public Policy Building",
-    "physics building": "Physics Building",
-    "warehouse": "Warehouse",
-    "facilities management building": "Facilities Management Building",
-    "chesapeake arena": "Chesapeake Arena",
-    "interdisciplinary life sciences building": "Interdisciplinary Life Sciences Building",
-    "the commons": "The Commons",
-    "lecture hall 1": "Lecture Hall 1",
-    "biological sciences building": "Biological Sciences Building",
-    "retriever activities center": "Retriever Activities Center",
-    "math & psychology building": "Math & Psychology Building",
-    "sondheim building": "Sondheim Building",
-    "meyerhoff chemistry building": "Meyerhoff Chemistry Building",
-    "university center": "University Center",
-    "sherman hall": "Sherman Hall",
-    "administration building": "Administration Building",
-    "information technology/engineering building": "Information Technology/Engineering Building",
-    "engineering building": "Engineering Building",
-    "fine arts building": "Fine Arts Building",
-    "performing arts & humanities building": "Performing Arts & Humanities Building",
-    "bwtech 5525": "BWTech 5525",
-    "bwtech 5523": "BWTech 5523",
-    "bwtech 5521": "BWTech 5521",
-    "bwtech 5522": "BWTech 5522",
-    "bwtech 5520": "BWTech 5520",
-    "umbc stadium complex": "UMBC Stadium Complex",
-    "umbc stadium ticket booth": "UMBC Stadium Ticket Booth",
-    "retriever soccer park ticket booth": "Retriever Soccer Park Ticket Booth",
-    "technology resource center": "Technology Resource Center",
-    "technology 2 building": "Technology 2 Building"
+    "pahb": {
+            type: "buildings",
+            name: "Performing Arts & Humanities Building"
+    },
+    "ilsb": {
+        type: "buildings",
+        name: "Interdisciplinary Life Sciences Building",
+    },
+    "ite": {
+        type: "buildings",
+        name: "Information Technology/Engineering Building"
+    },
+    "uc": {
+        type: "buildings",
+        name: "University Center"
+    },
+    "900 walker": {
+        type: "buildings",
+        name: "900 Walker"
+    },
+    "walker avenue apartments": {
+        type: "buildings",
+        name: "Walker Avenue Apartments"
+    },
+    "army rotc": {
+        type: "buildings",
+        name: "Army ROTC"
+    },
+    "naval rotc": {
+        type: "buildings",
+        name: "Naval ROTC"
+    },
+    "alumni house": {
+        type: "buildings",
+        name: "Alumni House"
+    },
+    "west hill apartments cho (choptank)": {
+        type: "buildings",
+        name: "West Hill Apartments CHO (Choptank)"
+    },
+    "west hill apartments tan": {
+        type: "buildings",
+        name: "West Hill Apartments TAN (Tuckahoe)"
+    },
+    "west hill apartments mag (magothy)": {
+        type: "buildings",
+        name: "West Hill Apartments MAG (Magothy)"
+    },
+    "west hill apartments wye (wye)": {
+        type: "buildings",
+        name: "West Hill Apartments WYE (Wye)"
+    },
+    "west hill apartment sev (severn)": {
+        type: "buildings",
+        name: "West Hill Apartment SEV (Severn)"
+    },
+    "west hill apartments chs (chester)": {
+        type: "buildings",
+        name: "West Hill Apartments CHS (Chester)"
+    },
+    "apartment community center (acc)": {
+        type: "buildings",
+        name: "Apartment Community Center (ACC)"
+    },
+    "terrace apartments gun (gunpowder)": {
+        type: "buildings",
+        name: "Terrace Apartments GUN (Gunpowder)"
+    },
+    "terrace apartments nan (nanticoke)": {
+        type: "buildings",
+        name: "Terrace Apartments NAN (Nanticoke)"
+    },
+    "terrace apartments mon (monocacy)": {
+        type: "buildings",
+        name: "Terrace Apartments MON (Monocacy)"
+    },
+    "terrace apartments tuc (tuckahoe)": {
+        type: "buildings",
+        name: "Terrace Apartments TUC (Tuckahoe)"
+    },
+    "terrace apartments chi (chincoteague)": {
+        type: "buildings",
+        name: "Terrace Apartments CHI (Chincoteague)"
+    },
+    "terrace apartments ant (antietam)": {
+        type: "buildings",
+        name: "Terrace Apartments ANT (Antietam)"
+    },
+    "terrace apartments sas (sassafras)": {
+        type: "buildings",
+        name: "Terrace Apartments SAS (Sassafras)"
+    },
+    "terrace apartments wic (wicomico)": {
+        type: "buildings",
+        name: "Terrace Apartments WIC (Wicomico)"
+    },
+    "hillside apartments ptx (patuxent)": {
+        type: "buildings",
+        name: "Hillside Apartments PTX (Patuxent)"
+    },
+    "hillside apartments elk (elk)": {
+        type: "buildings",
+        name: "Hillside Apartments ELK (Elk)"
+    },
+    "hillside apartments dpc (deep creek)": {
+        type: "buildings",
+        name: "Hillside Apartments DPC (Deep Creek)"
+    },
+    "hillside apartments cas (casselman)": {
+        type: "buildings",
+        name: "Hillside Apartments CAS (Casselman)"
+    },
+    "hillside apartments bre (breton)": {
+        type: "buildings",
+        name: "Hillside Apartments BRE (Breton)"
+    },
+    "hillside apartments sdl (sideling)": {
+        type: "buildings",
+        name: "Hillside Apartments SDL (Sideling)"
+    },
+    "hillside apartments poc (pocomoke)": {
+        type: "buildings",
+        name: "Hillside Apartments POC (Pocomoke)"
+    },
+    "hillside apartments man (manokin)": {
+        type: "buildings",
+        name: "Hillside Apartments MAN (Manokin)"
+    },
+    "erickson hall": {
+        type: "buildings",
+        name: "Erickson Hall"
+    },
+    "ymca preschool center": {
+        type: "buildings",
+        name: "YMCA Preschool Center"
+    },
+    "harbor hall": {
+        type: "buildings",
+        name: "Harbor Hall"
+    },
+    "chesapeake hall": {
+        type: "buildings",
+        name: "Chesapeake Hall"
+    },
+    "satellite plant": {
+        type: "buildings",
+        name: "Satellite Plant"
+    },
+    "the center for well-being": {
+        type: "buildings",
+        name: "The Center for Well-Being"
+    },
+    "susquehanna hall": {
+        type: "buildings",
+        name: "Susquehanna Hall"
+    },
+    "true grits": {
+        type: "buildings",
+        name: "True Grits"
+    },
+    "potomac hall": {
+        type: "buildings",
+        name: "Potomac Hall"
+    },
+    "patapsco hall": {
+        type: "buildings",
+        name: "Patapsco Hall"
+    },
+    "greenhouse": {
+        type: "buildings",
+        name: "Greenhouse"
+    },
+    "central plant": {
+        type: "buildings",
+        name: "Central Plant"
+    },
+    "albin o. kuhn library & gallery": {
+        type: "buildings",
+        name: "Albin O. Kuhn Library & Gallery",
+    "public policy building": "Public Policy Building"
+    },
+    "physics building": {
+        type: "buildings",
+        name: "Physics Building"
+    },
+    "warehouse": {
+        type: "buildings",
+        name: "Warehouse"
+    },
+    "facilities management building": {
+        type: "buildings",
+        name: "Facilities Management Building"
+    },
+    "chesapeake employers insurance arena": {
+        type: "buildings",
+        name: "Chesapeake Employers Insurance Arena"
+    },
+    "interdisciplinary life sciences building": {
+        type: "buildings",
+        name: "Interdisciplinary Life Sciences Building"
+    },
+    "the commons": {
+        type: "buildings",
+        name: "The Commons"
+    },
+    "lecture hall 1": {
+        type: "buildings",
+        name: "Lecture Hall 1"
+    },
+    "biological sciences building": {
+        type: "buildings",
+        name: "Biological Sciences Building"
+    },
+    "retriever activities center": {
+        type: "buildings",
+        name: "Retriever Activities Center"
+    },
+    "math & psychology building": {
+        type: "buildings",
+        name: "Math & Psychology Building"
+    },
+    "sondheim building": {
+        type: "buildings",
+        name: "Sondheim Building"
+    },
+    "meyerhoff chemistry building": {
+        type: "buildings",
+        name: "Meyerhoff Chemistry Building"
+    },
+    "university center": {
+        type: "buildings",
+        name: "University Center"
+    },
+    "sherman hall": {
+        type: "buildings",
+        name: "Sherman Hall"
+    },
+    "administration building":{
+        type: "buildings",
+        name:  "Administration Building"
+    },
+    "information technology/engineering building": {
+        type: "buildings",
+        name: "Information Technology/Engineering Building"
+    },
+    "engineering building": {
+        type: "buildings",
+        name: "Engineering Building"
+    },
+    "fine arts building": {
+        type: "buildings",
+        name: "Fine Arts Building"
+    },
+    "performing arts & humanities building": {
+        type: "buildings",
+        name: "Performing Arts & Humanities Building"
+    },
+    "bwtech 5525": {
+        type: "buildings",
+        name: "BWTech 5525"
+    },
+    "bwtech 5523": {
+        type: "buildings",
+        name: "BWTech 5523"
+    },
+    "bwtech 5521": {
+        type: "buildings",
+        name: "BWTech 5521"
+    },
+    "bwtech 5522": {
+        type: "buildings",
+        name: "BWTech 5522"
+    },
+    "bwtech 5520": {
+        type: "buildings",
+        name: "BWTech 5520"
+    },
+    "umbc stadium complex": {
+        type: "buildings",
+        name: "UMBC Stadium Complex"
+    },
+    "umbc stadium ticket booth": {
+        type: "buildings",
+        name: "UMBC Stadium Ticket Booth"
+    },
+    "retriever soccer park ticket booth": {
+        type: "buildings",
+        name: "Retriever Soccer Park Ticket Booth"
+    },
+    "technology resource center": {
+        type: "buildings",
+        name: "Technology Resource Center"
+    },
+    "technology 2 building": {
+        type: "buildings",
+        name: "Technology 2 Building"
+    },
+    "rac": {
+        type: "buildings",
+        name: "Retriever Activities Center"
+    },
+    "retriever soccer park": {
+        type: "buildings",
+        name: "Retriever Soccer Park"
+    },
+    "soccer stadium": {
+        type: "buildings",
+        name: "Retriever Soccer Park"
+    },
+    "lot 1": {
+        type: "parking",
+        name: "Lot 1"
+    },
+    "lot 2": {
+        type: "parking",
+        name: "Lot 2"
+    },
+    "lot 3": {
+        type: "parking",
+        name: "Lot 3"
+    },
+    "lot 4": {
+        type: "parking",
+        name: "Lot 4"
+    },
+    "lot 5": {
+        type: "parking",
+        name: "Lot 5"
+    },
+    "lot 6": {
+        type: "parking",
+        name: "Lot 6"
+    },
+    "lot 7": {
+        type: "parking",
+        name: "Lot 7"
+    },
+    "lot 8": {
+        type: "parking",
+        name: "Lot 8"
+    },
+    "lot 9": {
+        type: "parking",
+        name: "Lot 9"
+    },
+    "lot 10":{
+        type: "parking",
+        name:  "Lot 10"
+    },
+    "lot 11":{
+        type: "parking",
+        name:  "Lot 11"
+    },
+    "lot 12":{
+        type: "parking",
+        name:  "Lot 12"
+    },
+    "lot 20":{
+        type: "parking",
+        name:  "Lot 20"
+    },
+    "lot 21":{
+        type: "parking",
+        name:  "Lot 21"
+    },
+    "lot 22": {
+        type: "parking",
+        name: "Lot 22"
+    },
+    "lot 23": {
+        type: "parking",
+        name: "Lot 23"
+    },
+    "lot 24": {
+        type: "parking",
+        name: "Lot 24"
+    },
+    "lot 25": {
+        type: "parking",
+        name: "Lot 25"
+    },
+    "lot 26": {
+        type: "parking",
+        name: "Lot 26"
+    },
+    "lot 27": {
+        type: "parking",
+        name: "Lot 27"
+    },
+    "lot 28": {
+        type: "parking",
+        name: "Lot 28"
+    },
+    "lot 29": {
+        type: "parking",
+        name: "Lot 29"
+    },
+    "lot 30": {
+        type: "parking",
+        name: "Lot 30"
+    },
+    "lot 31": {
+        type: "parking",
+        name: "Lot 31"
+    },
+    "satellite lot 1": {
+        type: "parking",
+        name: "Satellite Lot 1"
+    },
+    "stadium lot": {
+        type: "parking",
+        name: "Stadium Lot"
+    },
+    "commons drive garage": {
+        type: "parking",
+        name: "Commons Drive Garage"
+    },
+    "administration drive garage": {
+        type: "parking",
+        name: "Administration Drive Garage"
+    },
+    "walker avenue garage": {
+        type: "parking",
+        name: "Walker Avenue Garage"
+    },
+    "900 walker accessible parking": {
+        type: "parking",
+        name: "900 Walker Accessible Parking"
+    },
+    "walker avenue apartments accessible parking": {
+        type: "parking",
+        name: "Walker Avenue Apartments Accessible Parking"
+    },
+    "lot 21 accessible parking": {
+        type: "parking",
+        name: "Lot 21 Accessible Parking"
+    },
+    "lot 30 accessible parking": {
+        type: "parking",
+        name: "Lot 30 Accessible Parking"
+    },
+    "lot 8 accessible parking": {
+        type: "parking",
+        name: "Lot 8 Accessible Parking"
+    },
+    "lot 9 accessible parking": {
+        type: "parking",
+        name: "Lot 9 Accessible Parking"
+    },
+    "admin garage accessible parking": {
+        type: "parking",
+        name: "Admin Garage Accessible Parking"
+    },
+    "walker avenue garage accessible parking": {
+        type: "parking",
+        name: "Walker Avenue Garage Accessible Parking"
+    },
+    "lot 6 accessible parking": {
+        type: "parking",
+        name: "Lot 6 Accessible Parking"
+    },
+    "lot 7 accessible parking": {
+        type: "parking",
+        name: "Lot 7 Accessible Parking"
+    },
+    "lot 5 accessible parking": {
+        type: "parking",
+        name: "Lot 5 Accessible Parking"
+    },
+    "lot 11 accessible parking": {
+        type: "parking",
+        name: "Lot 11 Accessible Parking"
+    },
+    "susquehanna hall accessible parking": {
+        type: "parking",
+        name: "Susquehanna Hall Accessible Parking"
+    },
+    "lot 12 accessible parking": {
+        type: "parking",
+        name: "Lot 12 Accessible Parking"
+    },
+    "patapsco hall accessible parking": {
+        type: "parking",
+        name: "Patapsco Hall Accessible Parking"
+    },
+    "lot 23 accessible parking": {
+        type: "parking",
+        name: "Lot 23 Accessible Parking"
+    },
+    "lot 4 accessible parking": {
+        type: "parking",
+        name: "Lot 4 Accessible Parking"
+    },
+    "lot 2 accessible parking": {
+        type: "parking",
+        name: "Lot 2 Accessible Parking"
+    },
+    "lot 1 accessible parking": {
+        type: "parking",
+        name: "Lot 1 Accessible Parking"
+    },
+    "commons garage accessible parking": {
+        type: "parking",
+        name: "Commons Garage Accessible Parking"
+    },
+    "chesapeake arena accessible parking": {
+        type: "parking",
+        name: "Chesapeake Arena Accessible Parking"
+    },
+    "lot 28 accessible parking": {
+        type: "parking",
+        name: "Lot 28 Accessible Parking"
+    },
+    "stadium lot accessible parking": {
+        type: "parking",
+        name: "Stadium Lot Accessible Parking"
+    },
+    "warehouse accessible parking": {
+        type: "parking",
+        name: "Warehouse Accessible Parking"
+    },
+    "facilities accessible parking": {
+        type: "parking",
+        name: "Facilities Accessible Parking"
+    },
+    "lot 25 accessible parking": {
+        type: "parking",
+        name: "Lot 25 Accessible Parking"
+    },
+    "reslife office": {
+        type: "resources",
+        name: "ResLife Office"
+    },
+    "facilities management office": {
+        type: "resources",
+        name: "Facilities Management Office"
+    },
+    "retriever learning center": {
+        type: "resources",
+        name: "Retriever Learning Center"
+    },
+    "financial aid and scholarship office": {
+        type: "resources",
+        name: "Financial Aid and Scholarship Office"
+    },
+    "registrars office": {
+        type: "resources",
+        name: "Registrar's Office"
+    },
+    "starbucks": {
+        type: "food",
+        name: "Starbucks"
+    },
+    "chick-fil-a": {
+        type: "food",
+        name: "Chick-fil-a"
+    },
+    "subway": {
+        type: "food",
+        name: "Subway"
+    },
+    "true grits": {
+        type: "food",
+        name: "True Grits"
+    },
+    "the skylight room": {
+        type: "food",
+        name: "The Skylight Room"
+    },
+    "einstein brother's bagels": {
+        type: "food",
+        name: "Einstein Brother's Bagels"
+    },
+    "the coffee shoppe": {
+        type: "food",
+        name: "The Coffee Shoppe"
+    },
+    "halal shack": {
+        type: "food",
+        name: "Halal Shack"
+    },
+    "2.mato": {
+        type: "food",
+        name: "2.Mato"
+    },
+    "wild greens": {
+        type: "food",
+        name: "Wild Greens"
+    },
+    "dunkin": {
+        type: "food",
+        name: "Dunkin"
+    },
+    "sushi do": {
+        type: "food",
+        name: "Sushi Do"
+    },
+    "copperhead jacks": {
+        type: "food",
+        name: "Copperhead Jacks"
+    },
+    "commons retriever market": {
+        type: "food",
+        name: "Commons Retriever Market"
+    },
+    "absurd bird & burgers": {
+        type: "food",
+        name: "Absurd Bird & Burgers"
+    },
+    "indian kitchen": {
+        type: "food",
+        name: "Indian Kitchen"
+    }
 };
 
+export const nameToId = {
+    //parking
+    "Lot 1": "PL01",
+    "Lot 2": "PL02",
+    "Lot 3": "PL03",
+    "Lot 4": "PL04",
+    "Lot 5": "PL05",
+    "Lot 6": "PL06",
+    "Lot 7": "PL07",
+    "Lot 8": "PL08",
+    "Lot 9": "PL09",
+    "Lot 10": "PL10",
+    "Lot 11": "PL11",
+    "Lot 12": "PL12",
+    "Lot 20": "PL20",
+    "Lot 21": "PL21",
+    "Lot 22": "PL22",
+    "Lot 23": "PL23",
+    "Lot 24": "PL24",
+    "Lot 25": "PL25",
+    "Lot 26": "PL26",
+    "Lot 27": "PL27",
+    "Lot 28": "PL28",
+    "Lot 29": "PL29",
+    "Lot 30": "PL30",
+    "Lot 31": "PL31",
+    "Satellite Lot 1": "PL13",
+    "Stadium Lot": "PL14",
+    "Commons Drive Garage": "PL15",
+    "Administration Drive Garage": "PL16",
+    "Walker Avenue Garage": "PL17",
+    "900 Walker Accessible Parking": "ACBL01",
+    "Walker Avenue Apartments Accessible Parking": "ACBL02",
+    "Lot 21 Accessible Parking": "ACBL03",
+    "Lot 30 Accessible Parking": "ACBL04",
+    "Lot 8 Accessible Parking": "ACBL06", // Appears twice, picking the second ID
+    "Lot 9 Accessible Parking": "ACBL07",
+    "Admin Garage Accessible Parking": "ACBL08",
+    "Walker Avenue Garage Accessible Parking": "ACBL09",
+    "Lot 6 Accessible Parking": "ACBL10",
+    "Lot 7 Accessible Parking": "ACBL11",
+    "Lot 5 Accessible Parking": "ACBL12",
+    "Lot 11 Accessible Parking": "ACBL14", // Appears twice, picking the second ID
+    "Susquehanna Hall Accessible Parking": "ACBL15",
+    "Lot 12 Accessible Parking": "ACBL16",
+    "Patapsco Hall Accessible Parking": "ACBL17",
+    "Lot 23 Accessible Parking": "ACBL18",
+    "Lot 4 Accessible Parking": "ACBL19",
+    "Lot 2 Accessible Parking": "ACBL20",
+    "Lot 1 Accessible Parking": "ACBL21",
+    "Commons Garage Accessible Parking": "ACBL22",
+    "Chesapeake Arena Accessible Parking": "ACBL23",
+    "Lot 28 Accessible Parking": "ACBL24",
+    "Stadium Lot Accessible Parking": "ACBL25",
+    "Warehouse Accessible Parking": "ACBL26",
+    "Facilities Accessible Parking": "ACBL27",
+    "Lot 25 Accessible Parking": "ACBL29", // Appears twice, picking the second ID
 
+    "Starbucks": "FD01",
+    "Chick-fil-a": "FD02",
+    "Subway": "FD03",
+    "True Grits": "FD04",
+    "The Skylight Room": "FD05",
+    "Einstein Brother's Bagels": "FD06",
+    "The Coffee Shoppe": "FD07",
+    "Halal Shack": "FD08",
+    "2.Mato": "FD09",
+    "Wild Greens": "FD10",
+    "Dunkin": "FD11",
+    "Sushi Do": "FD12",
+    "Copperhead Jacks": "FD13",
+    "Commons Retriever Market": "FD14",
+    "Absurd Bird & Burgers": "FD15",
+    "Indian Kitchen": "FD16",
 
-export const data = {
-    "buildings": buildings,
-    "parking": parking,
-    "food": food,
-    "resources": resources
+    // Resources
+    "ResLife Office": "OF01",
+    "Facilities Management Office": "OF02",
+    "Retriever Learning Center": "OF03",
+    "Financial Aid and Scholarship Office": "OF04",
+    "Registrar's Office": "OF05"
 };

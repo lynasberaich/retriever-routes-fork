@@ -2566,7 +2566,7 @@ export const umbc_polygons = {
       ]],
     "Warehouse": [],
     "Facilities Management Building": [],
-    "Chesapeake Arena": [[
+    "Chesapeake Employers Insurance Arena": [[
         -76.7079634,
         39.2520057
       ],
